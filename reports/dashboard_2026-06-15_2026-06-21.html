@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Ads Demand — Khánh | Tuần 15–21/06/2026</title>
+<title>Dashboard Ads Demand — Khánh</title>
 <style>
   :root{
     --bg:#0f1419; --card:#1a212b; --card2:#212b37; --line:#2c3845;
@@ -17,14 +17,12 @@
   .sub{color:var(--mut);font-size:13px;margin-top:4px}
   .head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
   .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
-  /* KPI cards */
   .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:18px}
   .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
   .kpi .label{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
   .kpi .val{font-size:22px;font-weight:700;margin-top:6px}
   .kpi .wow{font-size:12px;margin-top:4px}
   .up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--mut)}
-  /* table */
   table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px}
   th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}
   th:first-child,td:first-child{text-align:left}
@@ -39,7 +37,6 @@
   .p-good{background:rgba(63,185,80,.15);color:var(--good)}
   .delta-bad{color:var(--bad);font-weight:600}
   .delta-good{color:var(--good);font-weight:600}
-  /* bars */
   .bar-wrap{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
   .bar-row{display:grid;grid-template-columns:160px 1fr 130px;align-items:center;gap:10px;margin:9px 0;font-size:13px}
   .bar-track{background:#0c1117;border-radius:6px;height:22px;position:relative;overflow:hidden}
@@ -48,7 +45,6 @@
   .bar-now{top:50%;background:linear-gradient(90deg,#4f9dff,#7b5cff)}
   .bar-leg{font-size:12px;color:var(--mut);margin-top:6px;display:flex;gap:16px}
   .sw{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:middle}
-  /* creative cards */
   .tuyen{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 0;margin-bottom:14px;overflow:hidden}
   .tuyen h3{font-size:14.5px;padding:12px 16px;background:var(--card2);border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
   .tuyen h3 .meta{font-size:12px;color:var(--mut);font-weight:500}
@@ -76,7 +72,7 @@
 <body>
 <div class="head">
   <h1>📊 Dashboard Ads — Tuyến Demand <span class="badge">camp của Khánh</span></h1>
-  <div class="sub">Tài khoản <b>Adsplus 5 - 30shine - Tỉnh</b> · Kỳ <b>15/06 (T2) → 21/06 (CN) /2026</b> · so sánh tuần trước (08–14/06) · <span id="gen"></span></div>
+  <div class="sub" id="subhead"></div>
 </div>
 
 <div class="kpis" id="kpis"></div>
@@ -95,14 +91,8 @@
 
 <h2>🚦 Tín hiệu &amp; Đề xuất</h2>
 <div class="signal">
-  <div class="sig-card good">
-    <h4>🟢 Nên SCALE / giữ</h4>
-    <div id="sig-good"></div>
-  </div>
-  <div class="sig-card bad">
-    <h4>🔴 Nên GIẢM / TẮT</h4>
-    <div id="sig-bad"></div>
-  </div>
+  <div class="sig-card good"><h4>🟢 Nên SCALE / giữ</h4><div id="sig-good"></div></div>
+  <div class="sig-card bad"><h4>🔴 Nên GIẢM / TẮT</h4><div id="sig-bad"></div></div>
 </div>
 <div class="note" id="note"></div>
 
@@ -112,53 +102,61 @@
 <footer>Báo cáo tự sinh · Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · Nguồn: Meta Ads API</footer>
 
 <script>
-/* ====== DỮ LIỆU TUẦN (đổi block này mỗi tuần là dashboard tự cập nhật) ====== */
-const META = { week:"15/06 → 21/06/2026", generated:"Tạo ngày 27/06/2026" };
+/* ====== DỮ LIỆU TUẦN được script tao-bao-cao.ps1 chèn vào đây ====== */
+const WEEK = {
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "week": "15/06 (T2) → 21/06 (CN) /2026",
+    "prev": "08–14/06",
+    "generated": "Tạo ngày 27/06/2026"
+  },
+  "tuyen": [
+    { "ten": "Du lịch thư giãn 45 phút", "spend": 60092527, "mua": 450, "impr": 5254948, "reach": 2083651, "ctr": 0.88, "pSpend": 23904578, "pMua": 676 },
+    { "ten": "Tóc đẹp đi làm",           "spend": 46008279, "mua": 454, "impr": 3545946, "reach": 1729250, "ctr": 0.81, "pSpend": 19981243, "pMua": 686 },
+    { "ten": "Thera Studio",             "spend": 36858951, "mua": 319, "impr": 3145871, "reach": 1459980, "ctr": 0.32, "pSpend": 13148245, "pMua": 510 },
+    { "ten": "Nghỉ trưa",                "spend": 28968532, "mua": 276, "impr": 2524109, "reach": 1348146, "ctr": 0.63, "pSpend": 10481424, "pMua": 337 },
+    { "ten": "Tan làm",                  "spend": 19599464, "mua": 152, "impr": 1806438, "reach": 1023778, "ctr": 0.30, "pSpend": 10415935, "pMua": 430 }
+  ],
+  "creative": {
+    "Du lịch thư giãn 45 phút": [
+      { "n": "KOC Phạm Hoàng Nghĩa – \"Sau 2 năm quay lại 30Shine\"", "mua": 142, "cpa": 71209, "spend": 10111692, "ctr": 2.26, "win": true },
+      { "n": "Không KOC – \"Argen ăn mừng Hattrick\"", "mua": 105, "cpa": 215199, "spend": 22595848, "ctr": 0.20, "cut": true },
+      { "n": "KOC Nguyễn Hoàng Anh – \"Lần Đầu tại 30Shine\"", "mua": 54, "cpa": 89019, "spend": 4807054, "ctr": 3.41 },
+      { "n": "KOC Thái Bảo – \"MC Thái Bảo Review\"", "mua": 41, "cpa": 126544, "spend": 5188318, "ctr": 2.74 },
+      { "n": "KOC Hoàng – \"Check VAR 1000 thợ\"", "mua": 27, "cpa": 127344, "spend": 3438285, "ctr": 1.14 }
+    ],
+    "Tóc đẹp đi làm": [
+      { "n": "KOC Hoàng Nam Đăng – \"Tóc bết làm nghẽn việc\" (Uốn)", "mua": 92, "cpa": 80990, "spend": 7451098, "ctr": 1.36 },
+      { "n": "KOC Đặng Tiến Đông – \"Bí kíp tự tin lên sân khấu\"", "mua": 66, "cpa": 44594, "spend": 2943237, "ctr": 0.63, "win": true },
+      { "n": "KOC Tường Phát – \"Cut tóc đón hè\"", "mua": 58, "cpa": 75699, "spend": 4390570, "ctr": 1.29 },
+      { "n": "Không KOC – \"Dọn mái tóc dày cộp\" (Gội)", "mua": 57, "cpa": 174057, "spend": 9921244, "ctr": 0.05, "cut": true },
+      { "n": "KOC Sang Nguyễn – \"Uốn nhẹ + lấy ráy tai\"", "mua": 40, "cpa": 167555, "spend": 6702207, "ctr": 2.33 }
+    ],
+    "Thera Studio": [
+      { "n": "Không KOC – \"Cày cuốc an cư lạc nghiệp\"", "mua": 120, "cpa": 66497, "spend": 7979683, "ctr": 0.47, "win": true },
+      { "n": "Không KOC – \"Góc bình yên lánh áp lực\"", "mua": 77, "cpa": 190555, "spend": 14672757, "ctr": 0.16, "cut": true },
+      { "n": "Concept Thera 1 Ngủ – \"Gỡ rối cổ vai gáy\"", "mua": 52, "cpa": 74457, "spend": 3871768, "ctr": 0.99 },
+      { "n": "Concept Thera – \"Mô hình mới phục hồi\"", "mua": 16, "cpa": 130535, "spend": 2088557, "ctr": 0.34 },
+      { "n": "Concept Thera – \"Gồng mình cho 2 chữ ổn định\"", "mua": 15, "cpa": 133356, "spend": 2000334, "ctr": 0.31 }
+    ],
+    "Nghỉ trưa": [
+      { "n": "Không KOC – \"Điểm danh đêm nay thức trắng\"", "mua": 149, "cpa": 73404, "spend": 10937185, "ctr": 0.68, "win": true },
+      { "n": "KOL Hoàng Sao – \"Sau giờ nghỉ trưa anh sẽ là ai\"", "mua": 41, "cpa": 76663, "spend": 3143184, "ctr": 2.14 },
+      { "n": "Không KOC – \"Chợp mắt 45 phút\" (Gội)", "mua": 34, "cpa": 188416, "spend": 6406163, "ctr": 0.07, "cut": true },
+      { "n": "Không KOC – \"Giải nhiệt da đầu\" (Gội)", "mua": 30, "cpa": 164117, "spend": 4923501, "ctr": 0.20 },
+      { "n": "Không KOC – \"Chấp mọi KPI\"", "mua": 18, "cpa": 166936, "spend": 3004846, "ctr": 2.59 }
+    ],
+    "Tan làm": [
+      { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 79, "cpa": 96451, "spend": 7619643, "ctr": 0.65 },
+      { "n": "Không KOC – \"Vai gáy căng cứng\" (Gội)", "mua": 46, "cpa": 225078, "spend": 10353604, "ctr": 0.09, "cut": true },
+      { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 27, "cpa": 60230, "spend": 1626217, "ctr": 0.32, "win": true }
+    ]
+  }
+}
+;
+/* ================================================================= */
 
-const TUYEN = [
-  {ten:"Du lịch thư giãn 45 phút", spend:60092527, mua:450, impr:5254948, reach:2083651, ctr:0.88, pSpend:23904578, pMua:676},
-  {ten:"Tóc đẹp đi làm",          spend:46008279, mua:454, impr:3545946, reach:1729250, ctr:0.81, pSpend:19981243, pMua:686},
-  {ten:"Thera Studio",            spend:36858951, mua:319, impr:3145871, reach:1459980, ctr:0.32, pSpend:13148245, pMua:510},
-  {ten:"Nghỉ trưa",               spend:28968532, mua:276, impr:2524109, reach:1348146, ctr:0.63, pSpend:10481424, pMua:337},
-  {ten:"Tan làm",                 spend:19599464, mua:152, impr:1806438, reach:1023778, ctr:0.30, pSpend:10415935, pMua:430},
-];
-
-const CREATIVE = {
-  "Du lịch thư giãn 45 phút":[
-    {n:"KOC Phạm Hoàng Nghĩa – \"Sau 2 năm quay lại 30Shine\"", mua:142, cpa:71209, spend:10111692, ctr:2.26, win:true},
-    {n:"Không KOC – \"Argen ăn mừng Hattrick\"", mua:105, cpa:215199, spend:22595848, ctr:0.20, cut:true},
-    {n:"KOC Nguyễn Hoàng Anh – \"Lần Đầu tại 30Shine\"", mua:54, cpa:89019, spend:4807054, ctr:3.41},
-    {n:"KOC Thái Bảo – \"MC Thái Bảo Review\"", mua:41, cpa:126544, spend:5188318, ctr:2.74},
-    {n:"KOC Hoàng – \"Check VAR 1000 thợ\"", mua:27, cpa:127344, spend:3438285, ctr:1.14},
-  ],
-  "Tóc đẹp đi làm":[
-    {n:"KOC Hoàng Nam Đăng – \"Tóc bết làm nghẽn việc\" (Uốn)", mua:92, cpa:80990, spend:7451098, ctr:1.36},
-    {n:"KOC Đặng Tiến Đông – \"Bí kíp tự tin lên sân khấu\"", mua:66, cpa:44594, spend:2943237, ctr:0.63, win:true},
-    {n:"KOC Tường Phát – \"Cut tóc đón hè\"", mua:58, cpa:75699, spend:4390570, ctr:1.29},
-    {n:"Không KOC – \"Dọn mái tóc dày cộp\" (Gội)", mua:57, cpa:174057, spend:9921244, ctr:0.05, cut:true},
-    {n:"KOC Sang Nguyễn – \"Uốn nhẹ + lấy ráy tai\"", mua:40, cpa:167555, spend:6702207, ctr:2.33},
-  ],
-  "Thera Studio":[
-    {n:"Không KOC – \"Cày cuốc an cư lạc nghiệp\"", mua:120, cpa:66497, spend:7979683, ctr:0.47, win:true},
-    {n:"Không KOC – \"Góc bình yên lánh áp lực\"", mua:77, cpa:190555, spend:14672757, ctr:0.16, cut:true},
-    {n:"Concept Thera 1 Ngủ – \"Gỡ rối cổ vai gáy\"", mua:52, cpa:74457, spend:3871768, ctr:0.99},
-    {n:"Concept Thera – \"Mô hình mới phục hồi\"", mua:16, cpa:130535, spend:2088557, ctr:0.34},
-    {n:"Concept Thera – \"Gồng mình cho 2 chữ ổn định\"", mua:15, cpa:133356, spend:2000334, ctr:0.31},
-  ],
-  "Nghỉ trưa":[
-    {n:"Không KOC – \"Điểm danh đêm nay thức trắng\"", mua:149, cpa:73404, spend:10937185, ctr:0.68, win:true},
-    {n:"KOL Hoàng Sao – \"Sau giờ nghỉ trưa anh sẽ là ai\"", mua:41, cpa:76663, spend:3143184, ctr:2.14},
-    {n:"Không KOC – \"Chợp mắt 45 phút\" (Gội)", mua:34, cpa:188416, spend:6406163, ctr:0.07, cut:true},
-    {n:"Không KOC – \"Giải nhiệt da đầu\" (Gội)", mua:30, cpa:164117, spend:4923501, ctr:0.20},
-    {n:"Không KOC – \"Chấp mọi KPI\"", mua:18, cpa:166936, spend:3004846, ctr:2.59},
-  ],
-  "Tan làm":[
-    {n:"KOC Tường Phát – \"KOC luôn chú trọng\"", mua:79, cpa:96451, spend:7619643, ctr:0.65},
-    {n:"Không KOC – \"Vai gáy căng cứng\" (Gội)", mua:46, cpa:225078, spend:10353604, ctr:0.09, cut:true},
-    {n:"KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", mua:27, cpa:60230, spend:1626217, ctr:0.32, win:true},
-  ],
-};
-/* ====== HẾT PHẦN DỮ LIỆU ====== */
+const META = WEEK.meta, TUYEN = WEEK.tuyen, CREATIVE = WEEK.creative;
 
 const vnd = n => "₫"+n.toLocaleString("vi-VN");
 const pct = n => n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
@@ -168,9 +166,10 @@ const pCpaOf = t => Math.round(t.pSpend/t.pMua);
 const delta = (now,prev)=>((now-prev)/prev*100);
 const dStr = d => (d>=0?"+":"")+d.toLocaleString("vi-VN",{maximumFractionDigits:0})+"%";
 
-document.getElementById("gen").textContent = META.generated;
+document.title = "Dashboard Ads Demand — " + META.week;
+document.getElementById("subhead").innerHTML =
+  `Tài khoản <b>${META.account}</b> · Kỳ <b>${META.week}</b> · so sánh tuần trước (${META.prev}) · ${META.generated}`;
 
-/* KPI cards */
 const tot=(k)=>TUYEN.reduce((s,t)=>s+t[k],0);
 const totSpend=tot("spend"), totMua=tot("mua"), totPSpend=tot("pSpend"), totPMua=tot("pMua");
 const totCPA=Math.round(totSpend/totMua), totPCPA=Math.round(totPSpend/totPMua);
@@ -191,7 +190,6 @@ document.getElementById("kpis").innerHTML = kpis.map(k=>{
   return `<div class="kpi"><div class="label">${k.l}</div><div class="val">${k.v}</div>${wow}</div>`;
 }).join("");
 
-/* Overview table */
 function sig(t){
   const d=delta(cpaOf(t),pCpaOf(t));
   if(d>300) return `<span class="pill p-bad">🔴 Drop nặng</span>`;
@@ -200,12 +198,13 @@ function sig(t){
 }
 document.querySelector("#tbl tbody").innerHTML = TUYEN.map(t=>{
   const d=delta(cpaOf(t),pCpaOf(t));
+  const dcls = d>0?"delta-bad":"delta-good";
   return `<tr>
     <td class="b">${t.ten}</td>
     <td class="num">${vnd(t.spend)}</td>
     <td class="num">${big(t.mua)}</td>
     <td class="num">${vnd(cpaOf(t))}</td>
-    <td class="num delta-bad">${dStr(d)}</td>
+    <td class="num ${dcls}">${dStr(d)}</td>
     <td class="num mut">${big(t.impr)}</td>
     <td class="num mut">${big(t.reach)}</td>
     <td class="num">${pct(t.ctr)}</td>
@@ -213,17 +212,16 @@ document.querySelector("#tbl tbody").innerHTML = TUYEN.map(t=>{
   </tr>`;
 }).join("");
 document.querySelector("#tbl tfoot").innerHTML = `<tr>
-  <td>TỔNG (5 tuyến)</td>
+  <td>TỔNG (${TUYEN.length} tuyến)</td>
   <td class="num">${vnd(totSpend)}</td>
   <td class="num">${big(totMua)}</td>
   <td class="num">${vnd(totCPA)}</td>
   <td class="num delta-bad">${dStr(delta(totCPA,totPCPA))}</td>
   <td class="num">${big(tot("impr"))}</td>
   <td class="num">${big(tot("reach"))}</td>
-  <td class="num">${pct(totSpend? (TUYEN.reduce((s,t)=>s+t.ctr*t.impr,0)/tot("impr")):0)}</td>
+  <td class="num">${pct(TUYEN.reduce((s,t)=>s+t.ctr*t.impr,0)/tot("impr"))}</td>
   <td></td></tr>`;
 
-/* Bars: CPA prev vs now */
 const maxCPA=Math.max(...TUYEN.map(cpaOf));
 document.getElementById("bars").innerHTML =
   TUYEN.map(t=>{
@@ -239,20 +237,18 @@ document.getElementById("bars").innerHTML =
   }).join("") +
   `<div class="bar-leg"><span><span class="sw" style="background:#39506b"></span>CPA tuần trước</span><span><span class="sw" style="background:#4f9dff"></span>CPA tuần này</span></div>`;
 
-/* Signals */
 const all=[];
 for(const[ten,arr]of Object.entries(CREATIVE)) arr.forEach(c=>all.push({...c,ten}));
 const goods=all.filter(c=>c.win).sort((a,b)=>a.cpa-b.cpa);
 const bads=all.filter(c=>c.cut).sort((a,b)=>b.cpa-a.cpa);
 document.getElementById("sig-good").innerHTML = goods.map(c=>
-  `<div class="sig-item">🟢 <b>${c.n}</b><br><span class="mut">${c.ten} · ${big(c.mua)} mua · CPA ${vnd(c.cpa)} · CTR ${pct(c.ctr)}</span></div>`).join("");
+  `<div class="sig-item">🟢 <b>${c.n}</b><br><span class="mut">${c.ten} · ${big(c.mua)} mua · CPA ${vnd(c.cpa)} · CTR ${pct(c.ctr)}</span></div>`).join("") || `<div class="sig-item mut">—</div>`;
 document.getElementById("sig-bad").innerHTML = bads.map(c=>
-  `<div class="sig-item">🔴 <b>${c.n}</b><br><span class="mut">${c.ten} · CPA ${vnd(c.cpa)} · CTR ${pct(c.ctr)} · đã tiêu ${vnd(c.spend)}</span></div>`).join("");
+  `<div class="sig-item">🔴 <b>${c.n}</b><br><span class="mut">${c.ten} · CPA ${vnd(c.cpa)} · CTR ${pct(c.ctr)} · đã tiêu ${vnd(c.spend)}</span></div>`).join("") || `<div class="sig-item mut">—</div>`;
 
 document.getElementById("note").innerHTML =
-  `⚠️ <b>Cảnh báo toàn nhóm:</b> tuần này chi <b>${dStr(delta(totSpend,totPSpend))}</b> (${vnd(totPSpend)} → ${vnd(totSpend)}) nhưng lượt mua <b>${dStr(delta(totMua,totPMua))}</b> (${big(totPMua)} → ${big(totMua)}) ⇒ CPA tăng <b>${dStr(delta(totCPA,totPCPA))}</b>. Cả 5/5 tuyến đều xấu đi — nên kéo ngân sách về gần mức tuần trước & tắt các creative 🔴.<br><span style="opacity:.8">Lưu ý: tuần vừa đóng có thể còn vài đơn về trễ do attribution nên CPA sẽ giảm nhẹ sau vài ngày — nhưng mức tăng 3–5× là quá lớn để do attribution.</span>`;
+  `⚠️ <b>Cảnh báo toàn nhóm:</b> tuần này chi <b>${dStr(delta(totSpend,totPSpend))}</b> (${vnd(totPSpend)} → ${vnd(totSpend)}) nhưng lượt mua <b>${dStr(delta(totMua,totPMua))}</b> (${big(totPMua)} → ${big(totMua)}) ⇒ CPA <b>${dStr(delta(totCPA,totPCPA))}</b>.<br><span style="opacity:.8">Lưu ý: tuần vừa đóng có thể còn vài đơn về trễ do attribution nên CPA sẽ giảm nhẹ sau vài ngày.</span>`;
 
-/* Creative cards */
 document.getElementById("creatives").innerHTML = Object.entries(CREATIVE).map(([ten,arr])=>{
   const tmua=arr.reduce((s,c)=>s+c.mua,0);
   const rows=arr.map((c,i)=>{

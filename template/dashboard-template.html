@@ -103,57 +103,7 @@
 
 <script>
 /* ====== DỮ LIỆU TUẦN được script tao-bao-cao.ps1 chèn vào đây ====== */
-const WEEK = {
-  "meta": {
-    "account": "Adsplus 5 - 30shine - Tỉnh",
-    "week": "15/06 (T2) → 21/06 (CN) /2026",
-    "prev": "08–14/06",
-    "generated": "Tạo ngày 27/06/2026"
-  },
-  "tuyen": [
-    { "ten": "Du lịch thư giãn 45 phút", "spend": 60092527, "mua": 450, "impr": 5254948, "reach": 2083651, "ctr": 0.88, "pSpend": 23904578, "pMua": 676 },
-    { "ten": "Tóc đẹp đi làm",           "spend": 46008279, "mua": 454, "impr": 3545946, "reach": 1729250, "ctr": 0.81, "pSpend": 19981243, "pMua": 686 },
-    { "ten": "Thera Studio",             "spend": 36858951, "mua": 319, "impr": 3145871, "reach": 1459980, "ctr": 0.32, "pSpend": 13148245, "pMua": 510 },
-    { "ten": "Nghỉ trưa",                "spend": 28968532, "mua": 276, "impr": 2524109, "reach": 1348146, "ctr": 0.63, "pSpend": 10481424, "pMua": 337 },
-    { "ten": "Tan làm",                  "spend": 19599464, "mua": 152, "impr": 1806438, "reach": 1023778, "ctr": 0.30, "pSpend": 10415935, "pMua": 430 }
-  ],
-  "creative": {
-    "Du lịch thư giãn 45 phút": [
-      { "n": "KOC Phạm Hoàng Nghĩa – \"Sau 2 năm quay lại 30Shine\"", "mua": 142, "cpa": 71209, "spend": 10111692, "ctr": 2.26, "win": true },
-      { "n": "Không KOC – \"Argen ăn mừng Hattrick\"", "mua": 105, "cpa": 215199, "spend": 22595848, "ctr": 0.20, "cut": true },
-      { "n": "KOC Nguyễn Hoàng Anh – \"Lần Đầu tại 30Shine\"", "mua": 54, "cpa": 89019, "spend": 4807054, "ctr": 3.41 },
-      { "n": "KOC Thái Bảo – \"MC Thái Bảo Review\"", "mua": 41, "cpa": 126544, "spend": 5188318, "ctr": 2.74 },
-      { "n": "KOC Hoàng – \"Check VAR 1000 thợ\"", "mua": 27, "cpa": 127344, "spend": 3438285, "ctr": 1.14 }
-    ],
-    "Tóc đẹp đi làm": [
-      { "n": "KOC Hoàng Nam Đăng – \"Tóc bết làm nghẽn việc\" (Uốn)", "mua": 92, "cpa": 80990, "spend": 7451098, "ctr": 1.36 },
-      { "n": "KOC Đặng Tiến Đông – \"Bí kíp tự tin lên sân khấu\"", "mua": 66, "cpa": 44594, "spend": 2943237, "ctr": 0.63, "win": true },
-      { "n": "KOC Tường Phát – \"Cut tóc đón hè\"", "mua": 58, "cpa": 75699, "spend": 4390570, "ctr": 1.29 },
-      { "n": "Không KOC – \"Dọn mái tóc dày cộp\" (Gội)", "mua": 57, "cpa": 174057, "spend": 9921244, "ctr": 0.05, "cut": true },
-      { "n": "KOC Sang Nguyễn – \"Uốn nhẹ + lấy ráy tai\"", "mua": 40, "cpa": 167555, "spend": 6702207, "ctr": 2.33 }
-    ],
-    "Thera Studio": [
-      { "n": "Không KOC – \"Cày cuốc an cư lạc nghiệp\"", "mua": 120, "cpa": 66497, "spend": 7979683, "ctr": 0.47, "win": true },
-      { "n": "Không KOC – \"Góc bình yên lánh áp lực\"", "mua": 77, "cpa": 190555, "spend": 14672757, "ctr": 0.16, "cut": true },
-      { "n": "Concept Thera 1 Ngủ – \"Gỡ rối cổ vai gáy\"", "mua": 52, "cpa": 74457, "spend": 3871768, "ctr": 0.99 },
-      { "n": "Concept Thera – \"Mô hình mới phục hồi\"", "mua": 16, "cpa": 130535, "spend": 2088557, "ctr": 0.34 },
-      { "n": "Concept Thera – \"Gồng mình cho 2 chữ ổn định\"", "mua": 15, "cpa": 133356, "spend": 2000334, "ctr": 0.31 }
-    ],
-    "Nghỉ trưa": [
-      { "n": "Không KOC – \"Điểm danh đêm nay thức trắng\"", "mua": 149, "cpa": 73404, "spend": 10937185, "ctr": 0.68, "win": true },
-      { "n": "KOL Hoàng Sao – \"Sau giờ nghỉ trưa anh sẽ là ai\"", "mua": 41, "cpa": 76663, "spend": 3143184, "ctr": 2.14 },
-      { "n": "Không KOC – \"Chợp mắt 45 phút\" (Gội)", "mua": 34, "cpa": 188416, "spend": 6406163, "ctr": 0.07, "cut": true },
-      { "n": "Không KOC – \"Giải nhiệt da đầu\" (Gội)", "mua": 30, "cpa": 164117, "spend": 4923501, "ctr": 0.20 },
-      { "n": "Không KOC – \"Chấp mọi KPI\"", "mua": 18, "cpa": 166936, "spend": 3004846, "ctr": 2.59 }
-    ],
-    "Tan làm": [
-      { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 79, "cpa": 96451, "spend": 7619643, "ctr": 0.65 },
-      { "n": "Không KOC – \"Vai gáy căng cứng\" (Gội)", "mua": 46, "cpa": 225078, "spend": 10353604, "ctr": 0.09, "cut": true },
-      { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 27, "cpa": 60230, "spend": 1626217, "ctr": 0.32, "win": true }
-    ]
-  }
-}
-;
+const WEEK = {{DATA}};
 /* ================================================================= */
 
 const META = WEEK.meta, TUYEN = WEEK.tuyen, CREATIVE = WEEK.creative;
