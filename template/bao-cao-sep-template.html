@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo trình sếp — Tuyến Demand</title>
+<style>
+  :root{--bg:#0f1419;--card:#1a212b;--card2:#212b37;--line:#2c3845;--txt:#e6edf3;--mut:#8b98a8;--good:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#263241;--accent:#4f9dff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45;padding:24px;max-width:1180px;margin:0 auto}
+  h1{font-size:22px;font-weight:700}
+  h2{font-size:17px;font-weight:700;margin:30px 0 6px;display:flex;align-items:center;gap:8px}
+  .h2sub{color:var(--mut);font-size:12.5px;margin-bottom:12px}
+  .sub{color:var(--mut);font-size:13px;margin-top:4px}
+  .head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13px;margin-bottom:6px}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  thead th{background:var(--card2);color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#1f2935}
+  tfoot td{background:var(--card2);font-weight:700;border-top:2px solid var(--line)}
+  .mut{color:var(--mut)}.b{font-weight:700}.num{text-align:right;font-variant-numeric:tabular-nums}
+  .plan-in{width:96px;background:#0c1117;border:1px dashed var(--accent);border-radius:6px;color:var(--txt);padding:5px 7px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums}
+  .plan-in::placeholder{color:#54606e}
+  .ok{color:var(--good)}.miss{color:var(--bad)}.warnc{color:var(--warn)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600}
+  .p-bad{background:rgba(248,81,73,.15);color:var(--bad)}
+  .p-warn{background:rgba(210,153,34,.15);color:var(--warn)}
+  .p-good{background:rgba(63,185,80,.15);color:var(--good)}
+  .note{background:rgba(79,157,255,.07);border:1px solid rgba(79,157,255,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:#cfe0f5;margin:10px 0}
+  .note.amber{background:rgba(210,153,34,.08);border-color:rgba(210,153,34,.28);color:#e8d9b0}
+  /* funnel viz */
+  .funnel{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:8px}
+  .fstep{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:12px}
+  .fbar{height:34px;border-radius:7px;background:linear-gradient(90deg,#4f9dff,#7b5cff);display:flex;align-items:center;padding:0 12px;color:#fff;font-weight:700;font-size:13px;min-width:90px}
+  .fconv{font-size:12px;color:var(--mut);margin:2px 0 2px 150px}
+  /* health */
+  .hc{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 14px}
+  .hcard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card)}
+  .hcard .n{font-size:26px;font-weight:800}.hcard .l{font-size:12px;color:var(--mut)}
+  .hcard.g{border-left:3px solid var(--good)}.hcard.w{border-left:3px solid var(--warn)}.hcard.k{border-left:3px solid var(--bad)}
+  tr.k td{background:rgba(248,81,73,.07)}tr.g td{background:rgba(63,185,80,.06)}tr.t td{background:rgba(210,153,34,.06)}
+  .lists{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+  .lcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .lcard.k{border-left:3px solid var(--bad)}.lcard.g{border-left:3px solid var(--good)}
+  .lcard h4{font-size:13.5px;margin-bottom:8px}
+  .li{font-size:12.5px;padding:5px 0;border-bottom:1px dashed var(--line)}.li:last-child{border:none}
+  details{margin-top:6px}summary{cursor:pointer;color:var(--accent);font-size:13px;padding:6px 0}
+  footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);text-align:center}
+  @media(max-width:760px){.hc{grid-template-columns:1fr}.lists{grid-template-columns:1fr}.fstep,.fconv{grid-template-columns:1fr}.fconv{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>📋 Báo cáo trình sếp — Tuyến Demand <span class="badge">camp Khánh</span></h1>
+  <div class="sub" id="subhead"></div>
+</div>
+
+<h2>1️⃣ Kế hoạch vs Thực tế</h2>
+<div class="h2sub">Gõ <b>số Mục tiêu (Plan)</b> vào ô gạch xanh — %đạt tự tính, tự lưu trên trình duyệt này (gõ 1 lần, mở lại vẫn còn).</div>
+<table id="plan"><thead><tr>
+  <th>Tuyến</th><th>NS Mục tiêu</th><th>NS Thực tế</th><th>%NS</th><th>Mua MT</th><th>Mua TT</th><th>%Mua</th><th>CPA MT</th><th>CPA TT</th>
+</tr></thead><tbody></tbody><tfoot></tfoot></table>
+
+<h2>2️⃣ Phễu chuyển đổi (chẩn đoán CPA vỡ ở đâu)</h2>
+<div class="h2sub">Chuỗi: Chi tiền →(CPM)→ Hiển thị →(CTR)→ Click →(CPC)→ →(CR)→ Mua. Soi cột nào lệch là biết bệnh ở đâu.</div>
+<div class="funnel" id="funnelviz"></div>
+<table id="funnel"><thead><tr>
+  <th>Tuyến</th><th>Chi tiêu</th><th>CPM</th><th>Hiển thị</th><th>Tần suất</th><th>CTR</th><th>Click</th><th>CPC</th><th>CR (click→mua)</th><th>Mua</th><th>CPA</th>
+</tr></thead><tbody></tbody><tfoot></tfoot></table>
+<div class="note" id="funnel-note"></div>
+
+<h2>3️⃣ Sức khoẻ Creative</h2>
+<div class="h2sub">Phân loại theo CPA + lượng mua. 🟢 Scale = CPA rẻ &amp; có đơn · 🔴 Tắt = đốt tiền (CPA cao/CTR chết) · 🟡 Theo dõi = còn lại.</div>
+<div class="hc" id="hcount"></div>
+<div class="lists">
+  <div class="lcard k"><h4>🔴 Nên TẮT ngay (đốt tiền nhất)</h4><div id="killlist"></div></div>
+  <div class="lcard g"><h4>🟢 Nên SCALE (rẻ &amp; ra đơn)</h4><div id="scalelist"></div></div>
+</div>
+<div class="note amber" id="trap-note"></div>
+<details><summary>📋 Xem toàn bộ creative đã phân loại</summary>
+<table id="allc"><thead><tr><th>Creative</th><th>Tuyến</th><th>Chi tiêu</th><th>Mua</th><th>CPA</th><th>CTR</th><th>Trạng thái</th></tr></thead><tbody></tbody></table>
+</details>
+
+<footer>Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · CR = Mua ÷ Click · Nguồn: Meta Ads API</footer>
+
+<script>
+const D = {{DATA}};
+const vnd=n=>"₫"+Math.round(n).toLocaleString("vi-VN");
+const big=n=>Math.round(n).toLocaleString("vi-VN");
+const pc=n=>n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+document.getElementById("subhead").innerHTML=`Tài khoản <b>${D.meta.account}</b> · Kỳ <b>${D.meta.week}</b> · ${D.meta.generated}`;
+
+const T=D.tuyen;
+const sum=k=>T.reduce((s,t)=>s+t[k],0);
+const totSpend=sum("spend"),totImpr=sum("impr"),totClicks=sum("clicks"),totMua=sum("mua"),totReach=sum("reach");
+const cpaOf=t=>t.spend/t.mua, cpcOf=t=>t.spend/t.clicks, crOf=t=>t.mua/t.clicks*100;
+
+/* ---------- 1. PLAN vs THỰC TẾ ---------- */
+const PB=document.querySelector("#plan tbody");
+function lsKey(ten,f){return "plan_2226_"+ten+"_"+f;}
+function pctCell(actual,plan,inv){ // inv=true: thấp hơn plan là tốt (CPA)
+  if(!plan||plan<=0) return '<td class="mut">—</td>';
+  const r=actual/plan*100;
+  const good= inv? actual<=plan : actual>=plan;
+  return `<td class="num ${good?'ok':'miss'}">${r.toLocaleString("vi-VN",{maximumFractionDigits:0})}%</td>`;
+}
+function renderPlan(){
+  PB.innerHTML=T.map((t,i)=>{
+    const cpa=cpaOf(t);
+    const g=(f,ph)=>`<input class="plan-in" data-ten="${t.ten}" data-f="${f}" placeholder="${ph}" inputmode="numeric">`;
+    return `<tr>
+      <td class="b">${t.ten}</td>
+      <td>${g("ns","ngân sách")}</td>
+      <td class="num">${vnd(t.spend)}</td>
+      <td class="num" data-pct="ns" data-i="${i}">—</td>
+      <td>${g("mua","mua")}</td>
+      <td class="num">${big(t.mua)}</td>
+      <td class="num" data-pct="mua" data-i="${i}">—</td>
+      <td>${g("cpa","CPA")}</td>
+      <td class="num">${vnd(cpa)}</td>
+    </tr>`;
+  }).join("");
+  // gắn giá trị đã lưu + sự kiện
+  document.querySelectorAll("#plan .plan-in").forEach(inp=>{
+    const k=lsKey(inp.dataset.ten,inp.dataset.f);
+    const v=localStorage.getItem(k); if(v) inp.value=v;
+    inp.addEventListener("input",()=>{localStorage.setItem(k,inp.value);recalc();});
+  });
+  recalc();
+}
+function recalc(){
+  T.forEach((t,i)=>{
+    const ns=+(localStorage.getItem(lsKey(t.ten,"ns"))||0);
+    const mua=+(localStorage.getItem(lsKey(t.ten,"mua"))||0);
+    const cNs=document.querySelector(`#plan td[data-pct="ns"][data-i="${i}"]`);
+    const cMua=document.querySelector(`#plan td[data-pct="mua"][data-i="${i}"]`);
+    cNs.outerHTML=pctCell(t.spend,ns,false).replace("<td","<td data-pct=\"ns\" data-i=\""+i+"\"");
+    cMua.outerHTML=pctCell(t.mua,mua,false).replace("<td","<td data-pct=\"mua\" data-i=\""+i+"\"");
+  });
+}
+renderPlan();
+document.querySelector("#plan tfoot").innerHTML=`<tr><td>TỔNG</td><td></td><td class="num">${vnd(totSpend)}</td><td></td><td></td><td class="num">${big(totMua)}</td><td></td><td></td><td class="num">${vnd(totSpend/totMua)}</td></tr>`;
+
+/* ---------- 2. PHỄU ---------- */
+document.querySelector("#funnel tbody").innerHTML=T.map(t=>`<tr>
+  <td class="b">${t.ten}</td>
+  <td class="num">${vnd(t.spend)}</td>
+  <td class="num">${vnd(t.cpm)}</td>
+  <td class="num mut">${big(t.impr)}</td>
+  <td class="num">${t.freq.toFixed(2)}</td>
+  <td class="num">${pc(t.ctr)}</td>
+  <td class="num mut">${big(t.clicks)}</td>
+  <td class="num">${vnd(cpcOf(t))}</td>
+  <td class="num">${pc(crOf(t))}</td>
+  <td class="num">${big(t.mua)}</td>
+  <td class="num b">${vnd(cpaOf(t))}</td>
+</tr>`).join("");
+const totCPM=totSpend/totImpr*1000, totCTR=totClicks/totImpr*100, totCPC=totSpend/totClicks, totCR=totMua/totClicks*100, totCPA=totSpend/totMua, totFreq=totImpr/totReach;
+document.querySelector("#funnel tfoot").innerHTML=`<tr>
+  <td>TỔNG</td><td class="num">${vnd(totSpend)}</td><td class="num">${vnd(totCPM)}</td><td class="num">${big(totImpr)}</td>
+  <td class="num">${totFreq.toFixed(2)}</td><td class="num">${pc(totCTR)}</td><td class="num">${big(totClicks)}</td>
+  <td class="num">${vnd(totCPC)}</td><td class="num">${pc(totCR)}</td><td class="num">${big(totMua)}</td><td class="num b">${vnd(totCPA)}</td></tr>`;
+
+// funnel viz (toàn nhóm)
+const steps=[{l:"Hiển thị",v:totImpr},{l:"Click",v:totClicks},{l:"Mua",v:totMua}];
+document.getElementById("funnelviz").innerHTML=steps.map((s,i)=>{
+  const w=Math.max(8,Math.sqrt(s.v/steps[0].v)*100);
+  const conv=i>0?`<div class="fconv">↳ tỷ lệ qua bước: <b>${(s.v/steps[i-1].v*100).toLocaleString("vi-VN",{maximumFractionDigits:2})}%</b></div>`:"";
+  return `<div class="fstep"><div>${s.l}</div><div class="fbar" style="width:${w}%">${big(s.v)}</div></div>${conv}`;
+}).join("");
+
+// chẩn đoán nhanh: tuyến CPA cao nhất + vì sao
+const worst=[...T].sort((a,b)=>cpaOf(b)-cpaOf(a))[0];
+let why=[]; if(worst.ctr<0.4)why.push("CTR thấp (creative chưa hút bấm)"); if(crOf(worst)<1.3)why.push("CR thấp (sau click ít ra đơn)"); if(worst.cpm>totCPM*1.05)why.push("CPM cao (phân phối đắt)");
+document.getElementById("funnel-note").innerHTML=`🔎 <b>Chẩn đoán:</b> tuyến CPA cao nhất là <b>${worst.ten}</b> (${vnd(cpaOf(worst))}) — nguyên nhân: ${why.join(" + ")||"cần xem sâu hơn"}. Toàn nhóm: CR Hiển thị→Mua = <b>${(totMua/totImpr*100).toLocaleString("vi-VN",{maximumFractionDigits:3})}%</b>, CPC TB <b>${vnd(totCPC)}</b>.`;
+
+/* ---------- 3. SỨC KHOẺ CREATIVE ---------- */
+const C=D.creatives.map(c=>{
+  const cpa=c.m>0?c.s/c.m:Infinity;
+  let h;
+  if(c.trap) h="trap";
+  else if(c.s>=1000000 && (cpa>200000 || c.m<=2)) h="kill";
+  else if(c.m>=3 && cpa<=70000) h="scale";
+  else h="watch";
+  return {...c,cpa,h};
+});
+const cnt=h=>C.filter(c=>c.h===h).length;
+document.getElementById("hcount").innerHTML=`
+  <div class="hcard g"><div class="n ok">${cnt("scale")}</div><div class="l">🟢 Nên SCALE</div></div>
+  <div class="hcard w"><div class="n warnc">${cnt("watch")}</div><div class="l">🟡 Theo dõi</div></div>
+  <div class="hcard k"><div class="n miss">${cnt("kill")+cnt("trap")}</div><div class="l">🔴 Nên TẮT / soi lại</div></div>`;
+
+const kills=C.filter(c=>c.h==="kill").sort((a,b)=>b.s-a.s);
+const scales=C.filter(c=>c.h==="scale").sort((a,b)=>a.cpa-b.cpa);
+document.getElementById("killlist").innerHTML=kills.map(c=>`<div class="li">🔴 <b>${c.n}</b><br><span class="mut">${c.t} · CPA ${vnd(c.cpa)} · CTR ${pc(c.c)} · đã tiêu ${vnd(c.s)}</span></div>`).join("")||'<div class="li mut">—</div>';
+document.getElementById("scalelist").innerHTML=scales.slice(0,10).map(c=>`<div class="li">🟢 <b>${c.n}</b><br><span class="mut">${c.t} · CPA ${vnd(c.cpa)} · ${big(c.m)} mua · CTR ${pc(c.c)}</span></div>`).join("")||'<div class="li mut">—</div>';
+
+const trap=C.find(c=>c.h==="trap");
+document.getElementById("trap-note").innerHTML= trap
+ ? `⚠️ <b>Bẫy attribution — đừng tắt vội:</b> "${trap.n}" tuần này CPA ${vnd(trap.cpa)} nhìn như rác, nhưng <b>cả tháng 6 nó là creative #1 tuyến Nghỉ trưa (CPA ₫40.907)</b>. Đơn của những ngày cuối tuần chưa kịp về. → Giữ lại, chấm sau 3–5 ngày.`
+ : "";
+
+const order={kill:0,trap:1,watch:2,scale:3};
+document.querySelector("#allc tbody").innerHTML=[...C].sort((a,b)=>b.s-a.s).map(c=>{
+  const cls=c.h==="kill"?"k":(c.h==="scale"?"g":(c.h==="trap"?"t":""));
+  const lab=c.h==="kill"?'<span class="pill p-bad">🔴 Tắt</span>':c.h==="scale"?'<span class="pill p-good">🟢 Scale</span>':c.h==="trap"?'<span class="pill p-warn">⚠️ Bẫy attr.</span>':'<span class="pill p-warn">🟡 Theo dõi</span>';
+  return `<tr class="${cls}"><td>${c.n}</td><td class="mut">${c.t}</td><td class="num">${vnd(c.s)}</td><td class="num">${big(c.m)}</td><td class="num">${c.m>0?vnd(c.cpa):"—"}</td><td class="num">${pc(c.c)}</td><td>${lab}</td></tr>`;
+}).join("");
+</script>
+</body>
+</html>

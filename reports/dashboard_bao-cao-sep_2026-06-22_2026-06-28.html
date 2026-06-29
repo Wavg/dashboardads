@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo trình sếp — Tuyến Demand</title>
+<style>
+  :root{--bg:#0f1419;--card:#1a212b;--card2:#212b37;--line:#2c3845;--txt:#e6edf3;--mut:#8b98a8;--good:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#263241;--accent:#4f9dff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45;padding:24px;max-width:1180px;margin:0 auto}
+  h1{font-size:22px;font-weight:700}
+  h2{font-size:17px;font-weight:700;margin:30px 0 6px;display:flex;align-items:center;gap:8px}
+  .h2sub{color:var(--mut);font-size:12.5px;margin-bottom:12px}
+  .sub{color:var(--mut);font-size:13px;margin-top:4px}
+  .head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13px;margin-bottom:6px}
+  th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left;white-space:normal}
+  thead th{background:var(--card2);color:var(--mut);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#1f2935}
+  tfoot td{background:var(--card2);font-weight:700;border-top:2px solid var(--line)}
+  .mut{color:var(--mut)}.b{font-weight:700}.num{text-align:right;font-variant-numeric:tabular-nums}
+  .plan-in{width:96px;background:#0c1117;border:1px dashed var(--accent);border-radius:6px;color:var(--txt);padding:5px 7px;text-align:right;font-size:13px;font-variant-numeric:tabular-nums}
+  .plan-in::placeholder{color:#54606e}
+  .ok{color:var(--good)}.miss{color:var(--bad)}.warnc{color:var(--warn)}
+  .pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11.5px;font-weight:600}
+  .p-bad{background:rgba(248,81,73,.15);color:var(--bad)}
+  .p-warn{background:rgba(210,153,34,.15);color:var(--warn)}
+  .p-good{background:rgba(63,185,80,.15);color:var(--good)}
+  .note{background:rgba(79,157,255,.07);border:1px solid rgba(79,157,255,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:#cfe0f5;margin:10px 0}
+  .note.amber{background:rgba(210,153,34,.08);border-color:rgba(210,153,34,.28);color:#e8d9b0}
+  /* funnel viz */
+  .funnel{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:8px}
+  .fstep{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:12px}
+  .fbar{height:34px;border-radius:7px;background:linear-gradient(90deg,#4f9dff,#7b5cff);display:flex;align-items:center;padding:0 12px;color:#fff;font-weight:700;font-size:13px;min-width:90px}
+  .fconv{font-size:12px;color:var(--mut);margin:2px 0 2px 150px}
+  /* health */
+  .hc{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0 14px}
+  .hcard{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card)}
+  .hcard .n{font-size:26px;font-weight:800}.hcard .l{font-size:12px;color:var(--mut)}
+  .hcard.g{border-left:3px solid var(--good)}.hcard.w{border-left:3px solid var(--warn)}.hcard.k{border-left:3px solid var(--bad)}
+  tr.k td{background:rgba(248,81,73,.07)}tr.g td{background:rgba(63,185,80,.06)}tr.t td{background:rgba(210,153,34,.06)}
+  .lists{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:8px}
+  .lcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+  .lcard.k{border-left:3px solid var(--bad)}.lcard.g{border-left:3px solid var(--good)}
+  .lcard h4{font-size:13.5px;margin-bottom:8px}
+  .li{font-size:12.5px;padding:5px 0;border-bottom:1px dashed var(--line)}.li:last-child{border:none}
+  details{margin-top:6px}summary{cursor:pointer;color:var(--accent);font-size:13px;padding:6px 0}
+  footer{margin-top:30px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);text-align:center}
+  @media(max-width:760px){.hc{grid-template-columns:1fr}.lists{grid-template-columns:1fr}.fstep,.fconv{grid-template-columns:1fr}.fconv{margin-left:0}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>📋 Báo cáo trình sếp — Tuyến Demand <span class="badge">camp Khánh</span></h1>
+  <div class="sub" id="subhead"></div>
+</div>
+
+<h2>1️⃣ Kế hoạch vs Thực tế</h2>
+<div class="h2sub">Gõ <b>số Mục tiêu (Plan)</b> vào ô gạch xanh — %đạt tự tính, tự lưu trên trình duyệt này (gõ 1 lần, mở lại vẫn còn).</div>
+<table id="plan"><thead><tr>
+  <th>Tuyến</th><th>NS Mục tiêu</th><th>NS Thực tế</th><th>%NS</th><th>Mua MT</th><th>Mua TT</th><th>%Mua</th><th>CPA MT</th><th>CPA TT</th>
+</tr></thead><tbody></tbody><tfoot></tfoot></table>
+
+<h2>2️⃣ Phễu chuyển đổi (chẩn đoán CPA vỡ ở đâu)</h2>
+<div class="h2sub">Chuỗi: Chi tiền →(CPM)→ Hiển thị →(CTR)→ Click →(CPC)→ →(CR)→ Mua. Soi cột nào lệch là biết bệnh ở đâu.</div>
+<div class="funnel" id="funnelviz"></div>
+<table id="funnel"><thead><tr>
+  <th>Tuyến</th><th>Chi tiêu</th><th>CPM</th><th>Hiển thị</th><th>Tần suất</th><th>CTR</th><th>Click</th><th>CPC</th><th>CR (click→mua)</th><th>Mua</th><th>CPA</th>
+</tr></thead><tbody></tbody><tfoot></tfoot></table>
+<div class="note" id="funnel-note"></div>
+
+<h2>3️⃣ Sức khoẻ Creative</h2>
+<div class="h2sub">Phân loại theo CPA + lượng mua. 🟢 Scale = CPA rẻ &amp; có đơn · 🔴 Tắt = đốt tiền (CPA cao/CTR chết) · 🟡 Theo dõi = còn lại.</div>
+<div class="hc" id="hcount"></div>
+<div class="lists">
+  <div class="lcard k"><h4>🔴 Nên TẮT ngay (đốt tiền nhất)</h4><div id="killlist"></div></div>
+  <div class="lcard g"><h4>🟢 Nên SCALE (rẻ &amp; ra đơn)</h4><div id="scalelist"></div></div>
+</div>
+<div class="note amber" id="trap-note"></div>
+<details><summary>📋 Xem toàn bộ creative đã phân loại</summary>
+<table id="allc"><thead><tr><th>Creative</th><th>Tuyến</th><th>Chi tiêu</th><th>Mua</th><th>CPA</th><th>CTR</th><th>Trạng thái</th></tr></thead><tbody></tbody></table>
+</details>
+
+<footer>Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · CR = Mua ÷ Click · Nguồn: Meta Ads API</footer>
+
+<script>
+const D = {
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "week": "22/06 (T2) → 28/06 (CN) /2026",
+    "generated": "Cập nhật ngày 29/06/2026"
+  },
+  "tuyen": [
+    { "ten": "Du lịch thư giãn 45 phút", "spend": 26970307, "impr": 2475724, "reach": 1257946, "freq": 1.97, "cpm": 10894, "clicks": 14232, "ctr": 0.57, "mua": 226 },
+    { "ten": "Tóc đẹp đi làm",           "spend": 18906267, "impr": 1790680, "reach": 1013247, "freq": 1.77, "cpm": 10558, "clicks": 6551, "ctr": 0.37, "mua": 196 },
+    { "ten": "Thera Studio",             "spend": 9328094,  "impr": 862642,  "reach": 572664,  "freq": 1.51, "cpm": 10813, "clicks": 2220, "ctr": 0.26, "mua": 66 },
+    { "ten": "Nghỉ trưa",                "spend": 10700096, "impr": 1024762, "reach": 652701,  "freq": 1.57, "cpm": 10442, "clicks": 4917, "ctr": 0.48, "mua": 57 },
+    { "ten": "Tan làm",                  "spend": 5414446,  "impr": 583229,  "reach": 420001,  "freq": 1.39, "cpm": 9284,  "clicks": 951,  "ctr": 0.16, "mua": 29 }
+  ],
+  "creatives": [
+    { "n": "Argen ăn mừng Hattrick", "t": "Du lịch", "s": 12810307, "m": 55, "c": 0.21 },
+    { "n": "Dọn mái tóc dày cộp (Gội)", "t": "Tóc đẹp", "s": 8373899, "m": 84, "c": 0.04 },
+    { "n": "Góc bình yên lánh áp lực", "t": "Thera", "s": 5076307, "m": 27, "c": 0.14 },
+    { "n": "Vai gáy căng cứng (Gội)", "t": "Tan làm", "s": 4237963, "m": 25, "c": 0.06 },
+    { "n": "Giải nhiệt da đầu (Gội)", "t": "Nghỉ trưa", "s": 3759023, "m": 28, "c": 0.20 },
+    { "n": "Chợp mắt 45 phút (Gội)", "t": "Nghỉ trưa", "s": 2917372, "m": 10, "c": 0.07 },
+    { "n": "Tour không cần nghỉ phép", "t": "Du lịch", "s": 2804772, "m": 66, "c": 0.84 },
+    { "n": "Tường Phát – Cut tóc đón hè", "t": "Tóc đẹp", "s": 2302306, "m": 18, "c": 1.30 },
+    { "n": "Nguyễn Hoàng Anh – Lần Đầu", "t": "Du lịch", "s": 2171221, "m": 14, "c": 3.47 },
+    { "n": "Thái Bảo – MC Review", "t": "Du lịch", "s": 1980490, "m": 5, "c": 2.98 },
+    { "n": "Hoàng Sao – SAU GIỜ NGHỈ TRƯA", "t": "Nghỉ trưa", "s": 1829937, "m": 3, "c": 1.77, "trap": true },
+    { "n": "Ngồi máy 10-12 tiếng, ánh sáng xanh", "t": "Du lịch", "s": 1452150, "m": 15, "c": 0.63 },
+    { "n": "Sang Nguyễn – Uốn nhẹ + ráy tai", "t": "Tóc đẹp", "s": 1374455, "m": 11, "c": 1.92 },
+    { "n": "Chấp mọi KPI", "t": "Nghỉ trưa", "s": 1367209, "m": 3, "c": 1.81 },
+    { "n": "Hoàng không sao – Dự đoán kiểu tóc MV", "t": "Tóc đẹp", "s": 1163091, "m": 5, "c": 0.90 },
+    { "n": "Cày cuốc an cư lạc nghiệp", "t": "Thera", "s": 1100863, "m": 5, "c": 0.62 },
+    { "n": "Tan làm – Tường Phát KOC", "t": "Tan làm", "s": 838310, "m": 3, "c": 0.97 },
+    { "n": "Điểm danh đêm nay thức trắng", "t": "Nghỉ trưa", "s": 740675, "m": 12, "c": 0.59 },
+    { "n": "Sơn Nguyễn – cắt tóc mát mẻ", "t": "Tóc đẹp", "s": 651705, "m": 5, "c": 0.47 },
+    { "n": "Hoàng Sao – Combo nhà vô địch", "t": "Du lịch", "s": 637210, "m": 4, "c": 0.34 },
+    { "n": "Thera 1 Ngủ – Gỡ rối cổ vai gáy", "t": "Thera", "s": 619106, "m": 6, "c": 0.81 },
+    { "n": "Hoàng không sao – Check VAR (01/06)", "t": "Du lịch", "s": 617024, "m": 6, "c": 0.40 },
+    { "n": "Hoàng không sao – Nhuộm Ombree", "t": "Tóc đẹp", "s": 616535, "m": 8, "c": 1.11 },
+    { "n": "Cả tuần gồng vai chạy deadline", "t": "Du lịch", "s": 611255, "m": 5, "c": 0.20 },
+    { "n": "Căn studio Hà Đông dưới 1 tỷ", "t": "Thera", "s": 582816, "m": 3, "c": 0.23 },
+    { "n": "Tài chính dưới 2 tỷ sở hữu Thera", "t": "Thera", "s": 571833, "m": 9, "c": 0.40 },
+    { "n": "Ngọc Sơn – Các vợ ơi đưa chồng đi làm đẹp", "t": "Tóc đẹp", "s": 548900, "m": 13, "c": 0.98 },
+    { "n": "Hoang Nam Dang – Tóc bết làm nghẽn việc", "t": "Tóc đẹp", "s": 503694, "m": 1, "c": 2.59 },
+    { "n": "Ăn nhưng không béo – tóc tự tin đi biển", "t": "Tóc đẹp", "s": 453363, "m": 1, "c": 1.28 },
+    { "n": "Hoàng không sao – Check VAR (bản cũ)", "t": "Du lịch", "s": 447438, "m": 3, "c": 0.60 },
+    { "n": "Du lịch Retreat – offline 45 phút", "t": "Du lịch", "s": 415633, "m": 15, "c": 0.11 },
+    { "n": "Trần Đức Sỹ – mùa hè thiếu người yêu", "t": "Du lịch", "s": 372302, "m": 6, "c": 0.75 },
+    { "n": "Trương Minh Khoa – Tan làm sớm một hôm", "t": "Tan làm", "s": 338173, "m": 1, "c": 0.24 },
+    { "n": "Tường Phát – Các con vợ ơi mùa hè đến", "t": "Tóc đẹp", "s": 297782, "m": 7, "c": 0.53 },
+    { "n": "Tường Phát – KOC luôn chú trọng (Tour)", "t": "Du lịch", "s": 286526, "m": 5, "c": 0.49 },
+    { "n": "Phạm Hoàng Nghĩa – Sau 2 năm quay lại", "t": "Du lịch", "s": 286053, "m": 6, "c": 5.36 },
+    { "n": "Sơn Nguyễn – Anh em chơi thể thao", "t": "Tóc đẹp", "s": 285604, "m": 4, "c": 0.32 },
+    { "n": "Bùi Đình Công – như đi nghỉ dưỡng", "t": "Du lịch", "s": 280289, "m": 3, "c": 0.38 },
+    { "n": "Tóc tai bù xù giảm 50% tự tin", "t": "Du lịch", "s": 259097, "m": 2, "c": 0.04 },
+    { "n": "Lê Nam – Trời nóng đổi cái đầu trước", "t": "Tóc đẹp", "s": 251366, "m": 2, "c": 0.53 },
+    { "n": "Kai – Trải nghiệm dịch vụ đỉnh cao (Nhuộm)", "t": "Tóc đẹp", "s": 210835, "m": 0, "c": 1.55 },
+    { "n": "Hoàng không sao – Spiky Mullet 2026", "t": "Tóc đẹp", "s": 200035, "m": 2, "c": 0.23 },
+    { "n": "Lê Nam – 1 gợi ý mùa hè", "t": "Du lịch", "s": 196897, "m": 1, "c": 0.32 },
+    { "n": "Đặng Tiến Đông – Các vợ có thấy nóng không", "t": "Tóc đẹp", "s": 184300, "m": 4, "c": 0.23 },
+    { "n": "Lê Tuấn Kiệt – Đàn ông đôi khi không cần nhiều", "t": "Tóc đẹp", "s": 175882, "m": 6, "c": 0.73 },
+    { "n": "Hoàng Trần Anh – 122k cắt+gội+massage", "t": "Du lịch", "s": 172766, "m": 0, "c": 0.10 },
+    { "n": "Đặng Tiến Đông – Bí kíp tự tin lên sân khấu", "t": "Tóc đẹp", "s": 172341, "m": 3, "c": 0.70 },
+    { "n": "Trung Hiếu Review – tour thư giãn 45 phút", "t": "Du lịch", "s": 152757, "m": 4, "c": 0.25 },
+    { "n": "Hoàng Sao – Combo vô địch trước giải đấu", "t": "Thera", "s": 146385, "m": 5, "c": 1.38 },
+    { "n": "Thera 1 Ngủ – mô hình mới phục hồi", "t": "Thera", "s": 140627, "m": 2, "c": 0.29 },
+    { "n": "Kai – Tưởng đi cắt tóc ai ngờ chăm A-Z", "t": "Du lịch", "s": 135973, "m": 0, "c": 0.16 },
+    { "n": "Hoang Nam Dang – Trời nóng người cũng nóng", "t": "Du lịch", "s": 131824, "m": 1, "c": 0.11 },
+    { "n": "Hoang Nam Dang – Nắng nóng deadline dí", "t": "Du lịch", "s": 110720, "m": 0, "c": 0.12 },
+    { "n": "Tour không nghỉ phép giữa lòng phố", "t": "Du lịch", "s": 99269, "m": 1, "c": 0.19 },
+    { "n": "Ngọc Sơn – Các anh zai hè này", "t": "Tóc đẹp", "s": 90866, "m": 1, "c": 0.21 },
+    { "n": "Thera – Gồng mình cho 2 chữ ổn định", "t": "Thera", "s": 88136, "m": 2, "c": 0.32 },
+    { "n": "Hoàng Trần Anh – Trời nóng đừng chịu đựng", "t": "Du lịch", "s": 82641, "m": 0, "c": 0.06 },
+    { "n": "Sang Nguyễn – Ghiền 30Shine quay lại phục thù", "t": "Tóc đẹp", "s": 82616, "m": 0, "c": 0.50 },
+    { "n": "Hoàng Sao – đập hộp trải nghiệm", "t": "Nghỉ trưa", "s": 79865, "m": 1, "c": 0.56 }
+  ]
+}
+;
+const vnd=n=>"₫"+Math.round(n).toLocaleString("vi-VN");
+const big=n=>Math.round(n).toLocaleString("vi-VN");
+const pc=n=>n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
+document.getElementById("subhead").innerHTML=`Tài khoản <b>${D.meta.account}</b> · Kỳ <b>${D.meta.week}</b> · ${D.meta.generated}`;
+
+const T=D.tuyen;
+const sum=k=>T.reduce((s,t)=>s+t[k],0);
+const totSpend=sum("spend"),totImpr=sum("impr"),totClicks=sum("clicks"),totMua=sum("mua"),totReach=sum("reach");
+const cpaOf=t=>t.spend/t.mua, cpcOf=t=>t.spend/t.clicks, crOf=t=>t.mua/t.clicks*100;
+
+/* ---------- 1. PLAN vs THỰC TẾ ---------- */
+const PB=document.querySelector("#plan tbody");
+function lsKey(ten,f){return "plan_2226_"+ten+"_"+f;}
+function pctCell(actual,plan,inv){ // inv=true: thấp hơn plan là tốt (CPA)
+  if(!plan||plan<=0) return '<td class="mut">—</td>';
+  const r=actual/plan*100;
+  const good= inv? actual<=plan : actual>=plan;
+  return `<td class="num ${good?'ok':'miss'}">${r.toLocaleString("vi-VN",{maximumFractionDigits:0})}%</td>`;
+}
+function renderPlan(){
+  PB.innerHTML=T.map((t,i)=>{
+    const cpa=cpaOf(t);
+    const g=(f,ph)=>`<input class="plan-in" data-ten="${t.ten}" data-f="${f}" placeholder="${ph}" inputmode="numeric">`;
+    return `<tr>
+      <td class="b">${t.ten}</td>
+      <td>${g("ns","ngân sách")}</td>
+      <td class="num">${vnd(t.spend)}</td>
+      <td class="num" data-pct="ns" data-i="${i}">—</td>
+      <td>${g("mua","mua")}</td>
+      <td class="num">${big(t.mua)}</td>
+      <td class="num" data-pct="mua" data-i="${i}">—</td>
+      <td>${g("cpa","CPA")}</td>
+      <td class="num">${vnd(cpa)}</td>
+    </tr>`;
+  }).join("");
+  // gắn giá trị đã lưu + sự kiện
+  document.querySelectorAll("#plan .plan-in").forEach(inp=>{
+    const k=lsKey(inp.dataset.ten,inp.dataset.f);
+    const v=localStorage.getItem(k); if(v) inp.value=v;
+    inp.addEventListener("input",()=>{localStorage.setItem(k,inp.value);recalc();});
+  });
+  recalc();
+}
+function recalc(){
+  T.forEach((t,i)=>{
+    const ns=+(localStorage.getItem(lsKey(t.ten,"ns"))||0);
+    const mua=+(localStorage.getItem(lsKey(t.ten,"mua"))||0);
+    const cNs=document.querySelector(`#plan td[data-pct="ns"][data-i="${i}"]`);
+    const cMua=document.querySelector(`#plan td[data-pct="mua"][data-i="${i}"]`);
+    cNs.outerHTML=pctCell(t.spend,ns,false).replace("<td","<td data-pct=\"ns\" data-i=\""+i+"\"");
+    cMua.outerHTML=pctCell(t.mua,mua,false).replace("<td","<td data-pct=\"mua\" data-i=\""+i+"\"");
+  });
+}
+renderPlan();
+document.querySelector("#plan tfoot").innerHTML=`<tr><td>TỔNG</td><td></td><td class="num">${vnd(totSpend)}</td><td></td><td></td><td class="num">${big(totMua)}</td><td></td><td></td><td class="num">${vnd(totSpend/totMua)}</td></tr>`;
+
+/* ---------- 2. PHỄU ---------- */
+document.querySelector("#funnel tbody").innerHTML=T.map(t=>`<tr>
+  <td class="b">${t.ten}</td>
+  <td class="num">${vnd(t.spend)}</td>
+  <td class="num">${vnd(t.cpm)}</td>
+  <td class="num mut">${big(t.impr)}</td>
+  <td class="num">${t.freq.toFixed(2)}</td>
+  <td class="num">${pc(t.ctr)}</td>
+  <td class="num mut">${big(t.clicks)}</td>
+  <td class="num">${vnd(cpcOf(t))}</td>
+  <td class="num">${pc(crOf(t))}</td>
+  <td class="num">${big(t.mua)}</td>
+  <td class="num b">${vnd(cpaOf(t))}</td>
+</tr>`).join("");
+const totCPM=totSpend/totImpr*1000, totCTR=totClicks/totImpr*100, totCPC=totSpend/totClicks, totCR=totMua/totClicks*100, totCPA=totSpend/totMua, totFreq=totImpr/totReach;
+document.querySelector("#funnel tfoot").innerHTML=`<tr>
+  <td>TỔNG</td><td class="num">${vnd(totSpend)}</td><td class="num">${vnd(totCPM)}</td><td class="num">${big(totImpr)}</td>
+  <td class="num">${totFreq.toFixed(2)}</td><td class="num">${pc(totCTR)}</td><td class="num">${big(totClicks)}</td>
+  <td class="num">${vnd(totCPC)}</td><td class="num">${pc(totCR)}</td><td class="num">${big(totMua)}</td><td class="num b">${vnd(totCPA)}</td></tr>`;
+
+// funnel viz (toàn nhóm)
+const steps=[{l:"Hiển thị",v:totImpr},{l:"Click",v:totClicks},{l:"Mua",v:totMua}];
+document.getElementById("funnelviz").innerHTML=steps.map((s,i)=>{
+  const w=Math.max(8,Math.sqrt(s.v/steps[0].v)*100);
+  const conv=i>0?`<div class="fconv">↳ tỷ lệ qua bước: <b>${(s.v/steps[i-1].v*100).toLocaleString("vi-VN",{maximumFractionDigits:2})}%</b></div>`:"";
+  return `<div class="fstep"><div>${s.l}</div><div class="fbar" style="width:${w}%">${big(s.v)}</div></div>${conv}`;
+}).join("");
+
+// chẩn đoán nhanh: tuyến CPA cao nhất + vì sao
+const worst=[...T].sort((a,b)=>cpaOf(b)-cpaOf(a))[0];
+let why=[]; if(worst.ctr<0.4)why.push("CTR thấp (creative chưa hút bấm)"); if(crOf(worst)<1.3)why.push("CR thấp (sau click ít ra đơn)"); if(worst.cpm>totCPM*1.05)why.push("CPM cao (phân phối đắt)");
+document.getElementById("funnel-note").innerHTML=`🔎 <b>Chẩn đoán:</b> tuyến CPA cao nhất là <b>${worst.ten}</b> (${vnd(cpaOf(worst))}) — nguyên nhân: ${why.join(" + ")||"cần xem sâu hơn"}. Toàn nhóm: CR Hiển thị→Mua = <b>${(totMua/totImpr*100).toLocaleString("vi-VN",{maximumFractionDigits:3})}%</b>, CPC TB <b>${vnd(totCPC)}</b>.`;
+
+/* ---------- 3. SỨC KHOẺ CREATIVE ---------- */
+const C=D.creatives.map(c=>{
+  const cpa=c.m>0?c.s/c.m:Infinity;
+  let h;
+  if(c.trap) h="trap";
+  else if(c.s>=1000000 && (cpa>200000 || c.m<=2)) h="kill";
+  else if(c.m>=3 && cpa<=70000) h="scale";
+  else h="watch";
+  return {...c,cpa,h};
+});
+const cnt=h=>C.filter(c=>c.h===h).length;
+document.getElementById("hcount").innerHTML=`
+  <div class="hcard g"><div class="n ok">${cnt("scale")}</div><div class="l">🟢 Nên SCALE</div></div>
+  <div class="hcard w"><div class="n warnc">${cnt("watch")}</div><div class="l">🟡 Theo dõi</div></div>
+  <div class="hcard k"><div class="n miss">${cnt("kill")+cnt("trap")}</div><div class="l">🔴 Nên TẮT / soi lại</div></div>`;
+
+const kills=C.filter(c=>c.h==="kill").sort((a,b)=>b.s-a.s);
+const scales=C.filter(c=>c.h==="scale").sort((a,b)=>a.cpa-b.cpa);
+document.getElementById("killlist").innerHTML=kills.map(c=>`<div class="li">🔴 <b>${c.n}</b><br><span class="mut">${c.t} · CPA ${vnd(c.cpa)} · CTR ${pc(c.c)} · đã tiêu ${vnd(c.s)}</span></div>`).join("")||'<div class="li mut">—</div>';
+document.getElementById("scalelist").innerHTML=scales.slice(0,10).map(c=>`<div class="li">🟢 <b>${c.n}</b><br><span class="mut">${c.t} · CPA ${vnd(c.cpa)} · ${big(c.m)} mua · CTR ${pc(c.c)}</span></div>`).join("")||'<div class="li mut">—</div>';
+
+const trap=C.find(c=>c.h==="trap");
+document.getElementById("trap-note").innerHTML= trap
+ ? `⚠️ <b>Bẫy attribution — đừng tắt vội:</b> "${trap.n}" tuần này CPA ${vnd(trap.cpa)} nhìn như rác, nhưng <b>cả tháng 6 nó là creative #1 tuyến Nghỉ trưa (CPA ₫40.907)</b>. Đơn của những ngày cuối tuần chưa kịp về. → Giữ lại, chấm sau 3–5 ngày.`
+ : "";
+
+const order={kill:0,trap:1,watch:2,scale:3};
+document.querySelector("#allc tbody").innerHTML=[...C].sort((a,b)=>b.s-a.s).map(c=>{
+  const cls=c.h==="kill"?"k":(c.h==="scale"?"g":(c.h==="trap"?"t":""));
+  const lab=c.h==="kill"?'<span class="pill p-bad">🔴 Tắt</span>':c.h==="scale"?'<span class="pill p-good">🟢 Scale</span>':c.h==="trap"?'<span class="pill p-warn">⚠️ Bẫy attr.</span>':'<span class="pill p-warn">🟡 Theo dõi</span>';
+  return `<tr class="${cls}"><td>${c.n}</td><td class="mut">${c.t}</td><td class="num">${vnd(c.s)}</td><td class="num">${big(c.m)}</td><td class="num">${c.m>0?vnd(c.cpa):"—"}</td><td class="num">${pc(c.c)}</td><td>${lab}</td></tr>`;
+}).join("");
+</script>
+</body>
+</html>
