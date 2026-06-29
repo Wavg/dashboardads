@@ -10,6 +10,13 @@
     "month5tuyen": { "spend": 340777696, "customers": 4862, "cpa": 70090 },
     "goalSrc": "Target gốc T6 (sheet Tiến độ chi tiêu): Chi 978M · 32.500 khách · CPA 30.092đ. Báo cáo này chỉ tập trung phần FACEBOOK (ngân sách FB 651tr)."
   },
+  "plan": [
+    { "ten": "Tóc đẹp đi làm",           "lever": "Scale + nâng CTR",   "budget": 100000000, "muaT": 1920, "cpaT": 52000, "ctrT": 0.90, "crT": 2.8, "freqMax": 1.8, "m": { "spend": 84895549,  "mua": 1336, "cpa": 63545, "ctr": 0.72, "cr": 2.94, "freq": 2.63 } },
+    { "ten": "Du lịch thư giãn 45 phút", "lever": "Cắt lãng phí + Freq", "budget": 95000000,  "muaT": 1530, "cpaT": 62000, "ctrT": 1.00, "crT": 2.0, "freqMax": 1.6, "m": { "spend": 110966960, "mua": 1350, "cpa": 82198, "ctr": 0.92, "cr": 1.63, "freq": 2.99 } },
+    { "ten": "Thera Studio",             "lever": "Nâng CTR (mỏ vàng)", "budget": 62000000,  "muaT": 1380, "cpaT": 45000, "ctrT": 0.60, "crT": 5.0, "freqMax": 1.8, "m": { "spend": 59335290,  "mua": 895,  "cpa": 66296, "ctr": 0.33, "cr": 5.66, "freq": 2.47 } },
+    { "ten": "Tan làm",                  "lever": "Nâng CTR (mỏ vàng)", "budget": 50000000,  "muaT": 1190, "cpaT": 42000, "ctrT": 0.60, "crT": 5.0, "freqMax": 1.8, "m": { "spend": 35429845,  "mua": 611,  "cpa": 57987, "ctr": 0.35, "cr": 5.68, "freq": 2.05 } },
+    { "ten": "Nghỉ trưa",                "lever": "Nâng CR (click→mua)","budget": 45000000,  "muaT": 750,  "cpaT": 60000, "ctrT": 0.70, "crT": 3.0, "freqMax": 1.8, "m": { "spend": 50150052,  "mua": 670,  "cpa": 74851, "ctr": 0.71, "cr": 2.28, "freq": 2.22 } }
+  ],
   "tuyen": [
     { "ten": "Du lịch thư giãn 45 phút", "spend": 26970307, "impr": 2475724, "reach": 1257946, "freq": 1.97, "cpm": 10894, "clicks": 14232, "ctr": 0.57, "mua": 226 },
     { "ten": "Tóc đẹp đi làm",           "spend": 18906267, "impr": 1790680, "reach": 1013247, "freq": 1.77, "cpm": 10558, "clicks": 6551, "ctr": 0.37, "mua": 196 },

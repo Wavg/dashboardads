@@ -60,7 +60,14 @@
 
 <div class="note" id="goalbanner" style="display:none"></div>
 
-<h2>1️⃣ Kế hoạch vs Thực tế</h2>
+<h2>🎯 KPI mục tiêu theo tuyến <span style="font-weight:400;font-size:12px;color:var(--mut)">(chu kỳ tới · đối chiếu Tháng 6 thực tế)</span></h2>
+<div class="h2sub">Mỗi tuyến chốt 1 <b>đòn bẩy</b> theo tầng phễu yếu nhất. Ô <span class="ok">xanh</span> = T6 đang đạt KPI · <span class="miss">đỏ</span> = chưa đạt, cần kéo về mục tiêu.</div>
+<table id="kpiplan"><thead><tr>
+  <th>Tuyến</th><th>Đòn bẩy</th><th>NS MT</th><th>Mua MT</th><th>CPA MT</th><th>CPA T6</th><th>CTR MT</th><th>CTR T6</th><th>CR MT</th><th>CR T6</th><th>Freq ≤</th><th>Freq T6</th>
+</tr></thead><tbody></tbody><tfoot></tfoot></table>
+<div class="note" id="kpiplan-note"></div>
+
+<h2>1️⃣ Kế hoạch vs Thực tế (tuần này)</h2>
 <div class="h2sub">Gõ <b>số Mục tiêu (Plan)</b> vào ô gạch xanh — %đạt tự tính, tự lưu trên trình duyệt này (gõ 1 lần, mở lại vẫn còn).</div>
 <table id="plan"><thead><tr>
   <th>Tuyến</th><th>NS Mục tiêu</th><th>NS Thực tế</th><th>%NS</th><th>Mua MT</th><th>Mua TT</th><th>%Mua</th><th>CPA MT</th><th>CPA TT</th>
@@ -101,6 +108,28 @@ if(G){
   const dat = (m5.cpa && m5.cpa<=G.cpaTarget) ? '<span class="ok">(đạt target ✔)</span>' : '<span class="miss">(vượt target)</span>';
   const gb=document.getElementById("goalbanner"); gb.style.display="";
   gb.innerHTML=`🎯 <b>Mục tiêu Tháng 6 — phần FACEBOOK:</b> CPA mục tiêu <b>${vnd(G.cpaTarget)}</b> · Ngân sách FB <b>${vnd(G.fbBudget)}</b> <span style="opacity:.75">(trong tổng ${vnd(G.totBudget)} / ${big(G.totCustomers)} khách toàn kênh)</span>.<br>↳ 5 tuyến Demand (FB) cả tháng 6: <b>${vnd(m5.spend)}</b> chi · <b>${big(m5.customers)}</b> khách (omni_purchase) · CPA <b>${vnd(m5.cpa)}</b> ${dat}.<br><span style="opacity:.72;font-size:11.5px">⚠️ CPA FB đếm theo omni_purchase nên cao hơn target gộp 30k; ${M.goalSrc||""}</span>`;
+}
+
+/* ---------- KPI MỤC TIÊU THEO TUYẾN ---------- */
+if(D.plan){
+  const P=D.plan, ok=(c)=>c?"ok":"miss";
+  document.querySelector("#kpiplan tbody").innerHTML=P.map(p=>`<tr>
+    <td class="b">${p.ten}</td>
+    <td class="mut" style="font-size:11.5px">${p.lever}</td>
+    <td class="num">${vnd(p.budget)}</td>
+    <td class="num b">${big(p.muaT)}</td>
+    <td class="num">${vnd(p.cpaT)}</td>
+    <td class="num ${ok(p.m.cpa<=p.cpaT)}">${vnd(p.m.cpa)}</td>
+    <td class="num">${pc(p.ctrT)}</td>
+    <td class="num ${ok(p.m.ctr>=p.ctrT)}">${pc(p.m.ctr)}</td>
+    <td class="num">${pc(p.crT)}</td>
+    <td class="num ${ok(p.m.cr>=p.crT)}">${pc(p.m.cr)}</td>
+    <td class="num">≤${p.freqMax.toFixed(1)}</td>
+    <td class="num ${ok(p.m.freq<=p.freqMax)}">${p.m.freq.toFixed(2)}</td>
+  </tr>`).join("");
+  const tb=P.reduce((s,p)=>s+p.budget,0), tm=P.reduce((s,p)=>s+p.muaT,0), cur=P.reduce((s,p)=>s+p.m.mua,0);
+  document.querySelector("#kpiplan tfoot").innerHTML=`<tr><td>TỔNG</td><td></td><td class="num">${vnd(tb)}</td><td class="num">${big(tm)}</td><td class="num">${vnd(tb/tm)}</td><td colspan="7"></td></tr>`;
+  document.getElementById("kpiplan-note").innerHTML=`✅ <b>Kiểm chứng:</b> nếu đạt bộ KPI trên, <b>${vnd(tb)}</b> ngân sách → <b>${big(tm)} khách</b>/tháng (vs ${big(cur)} khách T6 = <b>+${Math.round((tm/cur-1)*100)}%</b>), CPA gộp <b>${vnd(tb/tm)}</b>. ↳ Đối chiếu con số này với <b>khách thật check-in ở salon</b>: nếu khách salon tăng đúng nhịp → KPI đúng hướng; nếu KPI đạt mà khách salon KHÔNG tăng → mẫu số "khách" hoặc chất lượng traffic có vấn đề.`;
 }
 
 const T=D.tuyen;
