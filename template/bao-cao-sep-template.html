@@ -58,6 +58,8 @@
   <div class="sub" id="subhead"></div>
 </div>
 
+<div class="note" id="goalbanner" style="display:none"></div>
+
 <h2>1️⃣ Kế hoạch vs Thực tế</h2>
 <div class="h2sub">Gõ <b>số Mục tiêu (Plan)</b> vào ô gạch xanh — %đạt tự tính, tự lưu trên trình duyệt này (gõ 1 lần, mở lại vẫn còn).</div>
 <table id="plan"><thead><tr>
@@ -91,7 +93,15 @@ const D = {{DATA}};
 const vnd=n=>"₫"+Math.round(n).toLocaleString("vi-VN");
 const big=n=>Math.round(n).toLocaleString("vi-VN");
 const pc=n=>n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
-document.getElementById("subhead").innerHTML=`Tài khoản <b>${D.meta.account}</b> · Kỳ <b>${D.meta.week}</b> · ${D.meta.generated}`;
+const M=D.meta;
+document.getElementById("subhead").innerHTML=`Tài khoản <b>${M.account}</b> · Kỳ <b>${M.week}</b> · ${M.generated}`;
+const G=M.monthGoal;
+if(G){
+  const m5=M.month5tuyen||{};
+  const dat = (m5.cpa && m5.cpa<=G.cpa) ? '<span class="ok">(đạt mục tiêu CPA ✔)</span>' : '<span class="miss">(vượt CPA)</span>';
+  const gb=document.getElementById("goalbanner"); gb.style.display="";
+  gb.innerHTML=`🎯 <b>Mục tiêu Tháng 6 (tài khoản Tỉnh · toàn kênh):</b> Ngân sách <b>${vnd(G.budget)}</b> · <b>${big(G.customers)}</b> khách · CPA mục tiêu <b>${vnd(G.cpa)}</b> · Bill ${vnd(G.bill)}.<br>↳ 5 tuyến Demand (Facebook) đóng góp cả tháng 6: <b>${vnd(m5.spend)}</b> chi · <b>${big(m5.customers)}</b> khách · CPA <b>${vnd(m5.cpa)}</b> ${dat}. <span style="opacity:.7;font-size:11.5px">${M.goalSrc||""}</span>`;
+}
 
 const T=D.tuyen;
 const sum=k=>T.reduce((s,t)=>s+t[k],0);
@@ -126,7 +136,9 @@ function renderPlan(){
   // gắn giá trị đã lưu + sự kiện
   document.querySelectorAll("#plan .plan-in").forEach(inp=>{
     const k=lsKey(inp.dataset.ten,inp.dataset.f);
-    const v=localStorage.getItem(k); if(v) inp.value=v;
+    let v=localStorage.getItem(k);
+    if(!v && inp.dataset.f==="cpa" && M.targetCpa){ v=String(M.targetCpa); localStorage.setItem(k,v); } // tự điền sẵn CPA mục tiêu 72k
+    if(v) inp.value=v;
     inp.addEventListener("input",()=>{localStorage.setItem(k,inp.value);recalc();});
   });
   recalc();
