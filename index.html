@@ -80,13 +80,13 @@
 <h2>🧭 Tổng quan theo tuyến</h2>
 <table id="tbl">
   <thead><tr>
-    <th>Tuyến Demand</th><th>Chi tiêu</th><th>Lượt mua</th><th>CPA</th><th>ΔCPA vs tuần trước</th><th>Impressions</th><th>Reach</th><th>CTR</th><th>Tín hiệu</th>
+    <th>Tuyến Demand</th><th>Chi tiêu</th><th>Lượt mua</th><th>CPA</th><th id="th-dcpa">ΔCPA vs kỳ trước</th><th>Impressions</th><th>Reach</th><th>CTR</th><th>Tín hiệu</th>
   </tr></thead>
   <tbody></tbody>
   <tfoot></tfoot>
 </table>
 
-<h2>📉 CPA tuần này vs tuần trước (theo tuyến)</h2>
+<h2 id="bars-h">📉 CPA theo tuyến</h2>
 <div class="bar-wrap" id="bars"></div>
 
 <h2>🚦 Tín hiệu &amp; Đề xuất</h2>
@@ -105,7 +105,7 @@
 <footer>Báo cáo tự sinh · Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · Nguồn: Meta Ads API</footer>
 
 <script>
-/* ====== DỮ LIỆU TUẦN được script tao-bao-cao.ps1 chèn vào đây ====== */
+/* ====== DỮ LIỆU KỲ được script tao-bao-cao.ps1 chèn vào đây ====== */
 const WEEK = {
   "meta": {
     "account": "Adsplus 5 - 30shine - Tỉnh",
@@ -175,9 +175,10 @@ const WEEK = {
   ]
 }
 ;
-/* ================================================================= */
+/* ================================================================ */
 
 const META = WEEK.meta, TUYEN = WEEK.tuyen, CREATIVE = WEEK.creative;
+const CMP = META.compare !== false;   // false = báo cáo không so sánh kỳ trước (vd báo cáo tháng đầu)
 
 const vnd = n => "₫"+n.toLocaleString("vi-VN");
 const pct = n => n.toLocaleString("vi-VN",{minimumFractionDigits:2,maximumFractionDigits:2})+"%";
@@ -189,15 +190,17 @@ const dStr = d => (d>=0?"+":"")+d.toLocaleString("vi-VN",{maximumFractionDigits:
 
 document.title = "Dashboard Ads Demand — " + META.week;
 document.getElementById("subhead").innerHTML =
-  `Tài khoản <b>${META.account}</b> · Kỳ <b>${META.week}</b> · so sánh tuần trước (${META.prev}) · ${META.generated}`;
+  `Tài khoản <b>${META.account}</b> · Kỳ <b>${META.week}</b>` + (CMP?` · so sánh kỳ trước (${META.prev})`:``) + ` · ${META.generated}`;
+if(!CMP) document.getElementById("th-dcpa").textContent = "ΔCPA";
 
 const tot=(k)=>TUYEN.reduce((s,t)=>s+t[k],0);
 const totSpend=tot("spend"), totMua=tot("mua"), totPSpend=tot("pSpend"), totPMua=tot("pMua");
-const totCPA=Math.round(totSpend/totMua), totPCPA=Math.round(totPSpend/totPMua);
+const totCPA=Math.round(totSpend/totMua), totPCPA=totPMua?Math.round(totPSpend/totPMua):0;
+
 const kpis=[
-  {l:"Chi tiêu",v:vnd(totSpend),d:delta(totSpend,totPSpend),inv:false},
-  {l:"Lượt mua",v:big(totMua),d:delta(totMua,totPMua),inv:false},
-  {l:"CPA trung bình",v:vnd(totCPA),d:delta(totCPA,totPCPA),inv:true},
+  {l:"Chi tiêu",v:vnd(totSpend),d:CMP?delta(totSpend,totPSpend):null,inv:false},
+  {l:"Lượt mua",v:big(totMua),d:CMP?delta(totMua,totPMua):null,inv:false},
+  {l:"CPA trung bình",v:vnd(totCPA),d:CMP?delta(totCPA,totPCPA):null,inv:true},
   {l:"Impressions",v:big(tot("impr")),d:null},
   {l:"Reach (cộng dồn)",v:big(tot("reach")),d:null},
 ];
@@ -206,30 +209,37 @@ document.getElementById("kpis").innerHTML = kpis.map(k=>{
   if(k.d!==null){
     const bad = k.inv ? k.d>0 : k.d<0;
     const cls = Math.abs(k.d)<1?"flat":(bad?"down":"up");
-    wow=`<div class="wow ${cls}">${dStr(k.d)} vs tuần trước</div>`;
+    wow=`<div class="wow ${cls}">${dStr(k.d)} vs kỳ trước</div>`;
   }
   return `<div class="kpi"><div class="label">${k.l}</div><div class="val">${k.v}</div>${wow}</div>`;
 }).join("");
 
-function sig(t){
+function sig(t){               // tín hiệu theo mức tăng CPA so kỳ trước
   const d=delta(cpaOf(t),pCpaOf(t));
   if(d>300) return `<span class="pill p-bad">🔴 Drop nặng</span>`;
   if(d>150) return `<span class="pill p-warn">🟠 Cần chú ý</span>`;
   return `<span class="pill p-good">🟢 Ổn</span>`;
 }
+function sigAbs(t){            // tín hiệu theo CPA so với trung bình kỳ (khi không có kỳ trước)
+  const r=cpaOf(t)/totCPA;
+  if(r>1.4) return `<span class="pill p-bad">🔴 CPA cao</span>`;
+  if(r>1.15) return `<span class="pill p-warn">🟠 Trên TB</span>`;
+  return `<span class="pill p-good">🟢 Tốt</span>`;
+}
 document.querySelector("#tbl tbody").innerHTML = TUYEN.map(t=>{
-  const d=delta(cpaOf(t),pCpaOf(t));
-  const dcls = d>0?"delta-bad":"delta-good";
+  const d=CMP?delta(cpaOf(t),pCpaOf(t)):0;
+  const dCell = CMP ? `<td class="num ${d>0?"delta-bad":"delta-good"}">${dStr(d)}</td>` : `<td class="num mut">—</td>`;
+  const sigCell = CMP ? sig(t) : sigAbs(t);
   return `<tr>
     <td class="b">${t.ten}</td>
     <td class="num">${vnd(t.spend)}</td>
     <td class="num">${big(t.mua)}</td>
     <td class="num">${vnd(cpaOf(t))}</td>
-    <td class="num ${dcls}">${dStr(d)}</td>
+    ${dCell}
     <td class="num mut">${big(t.impr)}</td>
     <td class="num mut">${big(t.reach)}</td>
     <td class="num">${pct(t.ctr)}</td>
-    <td style="text-align:center">${sig(t)}</td>
+    <td style="text-align:center">${sigCell}</td>
   </tr>`;
 }).join("");
 document.querySelector("#tbl tfoot").innerHTML = `<tr>
@@ -237,26 +247,26 @@ document.querySelector("#tbl tfoot").innerHTML = `<tr>
   <td class="num">${vnd(totSpend)}</td>
   <td class="num">${big(totMua)}</td>
   <td class="num">${vnd(totCPA)}</td>
-  <td class="num delta-bad">${dStr(delta(totCPA,totPCPA))}</td>
+  ${CMP?`<td class="num delta-bad">${dStr(delta(totCPA,totPCPA))}</td>`:`<td class="num mut">—</td>`}
   <td class="num">${big(tot("impr"))}</td>
   <td class="num">${big(tot("reach"))}</td>
   <td class="num">${pct(TUYEN.reduce((s,t)=>s+t.ctr*t.impr,0)/tot("impr"))}</td>
   <td></td></tr>`;
 
+document.getElementById("bars-h").textContent = CMP ? "📉 CPA kỳ này vs kỳ trước (theo tuyến)" : "📉 CPA theo tuyến (trong kỳ)";
 const maxCPA=Math.max(...TUYEN.map(cpaOf));
 document.getElementById("bars").innerHTML =
   TUYEN.map(t=>{
     const now=cpaOf(t), prev=pCpaOf(t);
-    return `<div class="bar-row">
-      <div>${t.ten}</div>
-      <div class="bar-track">
-        <div class="bar-prev" style="width:${prev/maxCPA*100}%"></div>
-        <div class="bar-now" style="width:${now/maxCPA*100}%"></div>
-      </div>
-      <div class="num"><span class="mut">${vnd(prev)}</span> → <b>${vnd(now)}</b></div>
-    </div>`;
+    const barInner = CMP
+      ? `<div class="bar-prev" style="width:${prev/maxCPA*100}%"></div><div class="bar-now" style="width:${now/maxCPA*100}%"></div>`
+      : `<div class="bar-now" style="top:25%;height:50%;width:${now/maxCPA*100}%"></div>`;
+    const right = CMP ? `<span class="mut">${vnd(prev)}</span> → <b>${vnd(now)}</b>` : `<b>${vnd(now)}</b>`;
+    return `<div class="bar-row"><div>${t.ten}</div><div class="bar-track">${barInner}</div><div class="num">${right}</div></div>`;
   }).join("") +
-  `<div class="bar-leg"><span><span class="sw" style="background:#39506b"></span>CPA tuần trước</span><span><span class="sw" style="background:#4f9dff"></span>CPA tuần này</span></div>`;
+  (CMP
+    ? `<div class="bar-leg"><span><span class="sw" style="background:#39506b"></span>CPA kỳ trước</span><span><span class="sw" style="background:#4f9dff"></span>CPA kỳ này</span></div>`
+    : `<div class="bar-leg"><span><span class="sw" style="background:#4f9dff"></span>CPA trong kỳ</span></div>`);
 
 const all=[];
 for(const[ten,arr]of Object.entries(CREATIVE)) arr.forEach(c=>all.push({...c,ten}));
@@ -267,8 +277,9 @@ document.getElementById("sig-good").innerHTML = goods.map(c=>
 document.getElementById("sig-bad").innerHTML = bads.map(c=>
   `<div class="sig-item">🔴 <b>${c.n}</b><br><span class="mut">${c.ten} · CPA ${vnd(c.cpa)} · CTR ${pct(c.ctr)} · đã tiêu ${vnd(c.spend)}</span></div>`).join("") || `<div class="sig-item mut">—</div>`;
 
-document.getElementById("note").innerHTML =
-  `⚠️ <b>Cảnh báo toàn nhóm:</b> tuần này chi <b>${dStr(delta(totSpend,totPSpend))}</b> (${vnd(totPSpend)} → ${vnd(totSpend)}) nhưng lượt mua <b>${dStr(delta(totMua,totPMua))}</b> (${big(totPMua)} → ${big(totMua)}) ⇒ CPA <b>${dStr(delta(totCPA,totPCPA))}</b>.<br><span style="opacity:.8">Lưu ý: tuần vừa đóng có thể còn vài đơn về trễ do attribution nên CPA sẽ giảm nhẹ sau vài ngày.</span>`;
+document.getElementById("note").innerHTML = CMP
+  ? `⚠️ <b>So với kỳ trước:</b> chi <b>${dStr(delta(totSpend,totPSpend))}</b> (${vnd(totPSpend)} → ${vnd(totSpend)}), lượt mua <b>${dStr(delta(totMua,totPMua))}</b> (${big(totPMua)} → ${big(totMua)}) ⇒ CPA <b>${dStr(delta(totCPA,totPCPA))}</b>.<br><span style="opacity:.8">Lưu ý: kỳ vừa đóng có thể còn vài đơn về trễ do attribution nên CPA sẽ giảm nhẹ sau vài ngày.</span>`
+  : `📅 <b>Tổng kết kỳ:</b> 5 tuyến Demand chi <b>${vnd(totSpend)}</b>, đạt <b>${big(totMua)}</b> lượt mua, CPA trung bình <b>${vnd(totCPA)}</b>.<br><span style="opacity:.8">Lưu ý: các tuyến Demand chỉ bắt đầu chạy từ tháng 6 nên kỳ này chưa có giai đoạn trước để so sánh (MoM).</span>`;
 
 document.getElementById("creatives").innerHTML = Object.entries(CREATIVE).map(([ten,arr])=>{
   const tmua=arr.reduce((s,c)=>s+c.mua,0);
@@ -294,7 +305,6 @@ if (WEEK.creators && WEEK.creators.length){
     const tSpend=ads.reduce((s,a)=>s+a.spend,0);
     const tMua=ads.reduce((s,a)=>s+a.mua,0);
     const tCpa=tMua?Math.round(tSpend/tMua):null;
-    const tClicks=ads.reduce((s,a)=>s+a.ctr*(a.impr||0),0);
     const rows=ads.map(a=>`<tr>
       <td>${a.n}</td>
       <td class="mut">${a.tuyen||""}</td>

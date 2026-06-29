@@ -106,7 +106,58 @@
 
 <script>
 /* ====== DỮ LIỆU KỲ được script tao-bao-cao.ps1 chèn vào đây ====== */
-const WEEK = {{DATA}};
+const WEEK = {
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "week": "01/06 → 28/06/2026 · BÁO CÁO THÁNG 6",
+    "prev": "",
+    "compare": false,
+    "generated": "Tạo ngày 29/06/2026"
+  },
+  "tuyen": [
+    { "ten": "Du lịch thư giãn 45 phút", "spend": 110966960, "mua": 1350, "impr": 9010514, "reach": 3012715, "ctr": 0.92, "pSpend": 110966960, "pMua": 1350 },
+    { "ten": "Tóc đẹp đi làm",           "spend": 84895549,  "mua": 1336, "impr": 6323024, "reach": 2407681, "ctr": 0.72, "pSpend": 84895549,  "pMua": 1336 },
+    { "ten": "Thera Studio",             "spend": 59335290,  "mua": 895,  "impr": 4788051, "reach": 1937000, "ctr": 0.33, "pSpend": 59335290,  "pMua": 895 },
+    { "ten": "Nghỉ trưa",                "spend": 50150052,  "mua": 670,  "impr": 4134574, "reach": 1862172, "ctr": 0.71, "pSpend": 50150052,  "pMua": 670 },
+    { "ten": "Tan làm",                  "spend": 35429845,  "mua": 611,  "impr": 3071111, "reach": 1494739, "ctr": 0.35, "pSpend": 35429845,  "pMua": 611 }
+  ],
+  "creative": {
+    "Du lịch thư giãn 45 phút": [
+      { "n": "KOC Phạm Hoàng Nghĩa – \"Sau 2 năm quay lại 30Shine\"", "mua": 404, "cpa": 51436, "spend": 20780112, "ctr": 2.26, "win": true },
+      { "n": "KOC Nguyễn Hoàng Anh – \"Lần Đầu tại 30Shine\"", "mua": 211, "cpa": 57670, "spend": 12168288, "ctr": 3.04 },
+      { "n": "Không KOC – \"Argen ăn mừng Hattrick\"", "mua": 160, "cpa": 221288, "spend": 35406155, "ctr": 0.20, "cut": true },
+      { "n": "KOC Thái Bảo – \"MC Thái Bảo Review\"", "mua": 156, "cpa": 74910, "spend": 11685981, "ctr": 2.90 },
+      { "n": "KOC Hoàng không sao – \"Check VAR 1000 thợ\"", "mua": 99, "cpa": 53382, "spend": 5284815, "ctr": 1.12 }
+    ],
+    "Tóc đẹp đi làm": [
+      { "n": "KOC Hoàng Nam Đăng – \"Tóc bết làm nghẽn việc\" (Uốn)", "mua": 367, "cpa": 46987, "spend": 17244114, "ctr": 1.33 },
+      { "n": "KOC Tường Phát – \"Cut tóc đón hè\"", "mua": 160, "cpa": 54350, "spend": 8696033, "ctr": 1.28 },
+      { "n": "Không KOC – \"Dọn mái tóc dày cộp\" (Gội)", "mua": 141, "cpa": 129752, "spend": 18295066, "ctr": 0.04, "cut": true },
+      { "n": "KOC Sang Nguyễn – \"Uốn nhẹ + lấy ráy tai\"", "mua": 120, "cpa": 86779, "spend": 10413439, "ctr": 2.27 },
+      { "n": "KOC Đặng Tiến Đông – \"Bí kíp tự tin lên sân khấu\"", "mua": 118, "cpa": 36238, "spend": 4276059, "ctr": 0.68, "win": true }
+    ],
+    "Thera Studio": [
+      { "n": "Không KOC – \"Cày cuốc an cư lạc nghiệp\"", "mua": 394, "cpa": 39715, "spend": 15647780, "ctr": 0.51, "win": true },
+      { "n": "Concept Thera 1 Ngủ – \"Gỡ rối cổ vai gáy\"", "mua": 127, "cpa": 49060, "spend": 6230624, "ctr": 0.90 },
+      { "n": "Không KOC – \"Góc bình yên lánh áp lực\"", "mua": 104, "cpa": 189895, "spend": 19749064, "ctr": 0.16, "cut": true },
+      { "n": "Concept Thera – \"Gồng mình cho 2 chữ ổn định\"", "mua": 67, "cpa": 47295, "spend": 3168790, "ctr": 0.27 },
+      { "n": "Concept Thera – \"Mô hình mới phục hồi\"", "mua": 65, "cpa": 50838, "spend": 3304446, "ctr": 0.33 }
+    ],
+    "Nghỉ trưa": [
+      { "n": "KOL Hoàng Sao – \"Sau giờ nghỉ trưa anh sẽ là ai\"", "mua": 290, "cpa": 40907, "spend": 11863026, "ctr": 1.84, "win": true },
+      { "n": "Không KOC – \"Điểm danh đêm nay thức trắng\"", "mua": 166, "cpa": 71125, "spend": 11806711, "ctr": 0.66 },
+      { "n": "Không KOC – \"Chấp mọi KPI\"", "mua": 65, "cpa": 94526, "spend": 6144217, "ctr": 2.26 },
+      { "n": "Không KOC – \"Giải nhiệt da đầu\" (Gội)", "mua": 58, "cpa": 149699, "spend": 8682524, "ctr": 0.20 },
+      { "n": "Không KOC – \"Chợp mắt 45 phút\" (Gội)", "mua": 44, "cpa": 211899, "spend": 9323535, "ctr": 0.07, "cut": true }
+    ],
+    "Tan làm": [
+      { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 367, "cpa": 45022, "spend": 16522913, "ctr": 0.72 },
+      { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 171, "cpa": 25011, "spend": 4276894, "ctr": 0.26, "win": true },
+      { "n": "Không KOC – \"Vai gáy căng cứng\" (Gội)", "mua": 71, "cpa": 205515, "spend": 14591567, "ctr": 0.08, "cut": true }
+    ]
+  }
+}
+;
 /* ================================================================ */
 
 const META = WEEK.meta, TUYEN = WEEK.tuyen, CREATIVE = WEEK.creative;

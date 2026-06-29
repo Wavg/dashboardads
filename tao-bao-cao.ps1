@@ -7,7 +7,7 @@
     - reports\dashboard_<ten-file>.html   (lưu trữ theo tuần)
     - index.html                          (luôn = bản mới nhất)
 #>
-param([string]$DataFile)
+param([string]$DataFile, [switch]$NoIndex)
 
 $ErrorActionPreference = "Stop"
 $root      = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -36,8 +36,11 @@ $html = $template.Replace("{{DATA}}", $json)
 $enc = New-Object System.Text.UTF8Encoding($false)   # UTF-8 khong BOM
 $out = Join-Path $reportDir ("dashboard_" + $base + ".html")
 [System.IO.File]::WriteAllText($out, $html, $enc)
-[System.IO.File]::WriteAllText((Join-Path $root "index.html"), $html, $enc)
-
 Write-Host "Da tao bao cao tu: $DataFile" -ForegroundColor Green
 Write-Host "  -> $out"
-Write-Host "  -> index.html (ban moi nhat)"
+if (-not $NoIndex) {
+  [System.IO.File]::WriteAllText((Join-Path $root "index.html"), $html, $enc)
+  Write-Host "  -> index.html (ban moi nhat)"
+} else {
+  Write-Host "  (bo qua index.html do -NoIndex)"
+}
