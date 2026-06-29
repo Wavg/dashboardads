@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Báo cáo Creative — Hoàng Sao & Hoàng không sao</title>
+<style>
+  :root{--bg:#0f1419;--card:#1a212b;--card2:#212b37;--line:#2c3845;--txt:#e6edf3;--mut:#8b98a8;--good:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#263241;--accent:#4f9dff}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45;padding:24px;max-width:1100px;margin:0 auto}
+  h1{font-size:22px;font-weight:700}
+  h2{font-size:16px;font-weight:600;margin:26px 0 12px}
+  .sub{color:var(--mut);font-size:13px;margin-top:4px}
+  .head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
+  .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .kpi .label{font-size:12px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+  .kpi .val{font-size:22px;font-weight:700;margin-top:6px}
+  .winbox{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+  .wcard{background:linear-gradient(180deg,rgba(63,185,80,.10),rgba(63,185,80,.02));border:1px solid rgba(63,185,80,.35);border-radius:12px;padding:16px}
+  .wcard .who{font-size:12px;color:var(--good);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .wcard .cn{font-size:15px;font-weight:700;margin:6px 0 8px}
+  .wcard .st{font-size:13px;color:var(--mut)}
+  .wcard .big{color:var(--txt);font-weight:700}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:13.5px;margin-bottom:8px}
+  th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}
+  th:first-child,td:first-child{text-align:left}
+  thead th{background:var(--card2);color:var(--mut);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#1f2935}
+  tfoot td{background:var(--card2);font-weight:700;border-top:2px solid var(--line)}
+  tr.win td{background:rgba(63,185,80,.08)}
+  tr.cut td{background:rgba(248,81,73,.06)}
+  .mut{color:var(--mut)}.b{font-weight:700}.num{text-align:right;font-variant-numeric:tabular-nums}
+  .person-h{font-size:15px;font-weight:700;margin:24px 0 8px;display:flex;align-items:center;gap:8px}
+  .tag{font-size:11px;color:var(--mut);font-weight:500}
+  .note{background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.25);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#e8d9b0;margin-top:16px}
+  footer{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);text-align:center}
+  @media(max-width:680px){.winbox{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="head">
+  <h1>🎤 Báo cáo Creative — Hoàng Sao &amp; Hoàng không sao <span class="badge" id="codeb"></span></h1>
+  <div class="sub" id="subhead"></div>
+</div>
+
+<div class="kpis" id="kpis"></div>
+
+<h2>🏆 Creative WIN của mỗi người</h2>
+<div class="winbox" id="winbox"></div>
+
+<div id="persons"></div>
+
+<div class="note" id="note"></div>
+
+<footer>Đã gộp các bản quảng cáo trùng creative · Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · Nguồn: Meta Ads API</footer>
+
+<script>
+const D = {
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "period": "01–28/06/2026 (Tháng 6)",
+    "code": "10819",
+    "generated": "Tạo ngày 29/06/2026",
+    "note": "💡 <b>Hoàng không sao</b> mạnh ở nội dung gắn 'sếp Tùng' (Nhuộm Ombree 1.247 mua) & 'Spiky Mullet'. <b>Hoàng Sao</b> mạnh ở 'Sau giờ nghỉ trưa' (792 mua) — và đặc biệt 'Thời tiết 40 độ trông xe' CPA chỉ ₫6.566, RẺ NHẤT, rất đáng nhân rộng. 🔴 Nên tắt/làm lại 'Dự đoán kiểu tóc MV' (CPA ₫152.970).<br><span style='opacity:.8'>Đã gộp các bản quảng cáo trùng creative; số liệu cả tháng 6 (01–28). 'Lượt mua' kỳ vừa đóng có thể còn về thêm do attribution.</span>"
+  },
+  "persons": [
+    {
+      "name": "KOC Hoàng không sao",
+      "creatives": [
+        { "n": "Nhuộm màu sếp Tùng – bản Ombree", "tuyen": "Nhuộm", "spend": 26623789, "mua": 1247, "win": true },
+        { "n": "Spiky Mullet nhiều texture 2026", "tuyen": "Cắt/Combo", "spend": 11239510, "mua": 659 },
+        { "n": "Series Check VAR 1000 thợ", "tuyen": "Tour du lịch", "spend": 6595814, "mua": 235 },
+        { "n": "Mohawk Tapper hair style 2026", "tuyen": "Tour du lịch", "spend": 2193657, "mua": 91 },
+        { "n": "Dự đoán kiểu tóc MV sếp Tùng", "tuyen": "Cắt", "spend": 6424744, "mua": 42, "cut": true },
+        { "n": "Cắt tạo kiểu \"Người im lặng\"", "tuyen": "Combo", "spend": 426612, "mua": 33 },
+        { "n": "Check VAR Ngày 4 – Ivy uốn Hoàng Sao", "tuyen": "Uốn", "spend": 59739, "mua": 5 },
+        { "n": "Check VAR Ngày 2 – Biến hình trưởng phòng", "tuyen": "Uốn", "spend": 15392, "mua": 2 }
+      ]
+    },
+    {
+      "name": "KOL Hoàng Sao",
+      "creatives": [
+        { "n": "SAU GIỜ NGHỈ TRƯA, ANH SẼ LÀ AI", "tuyen": "Nghỉ trưa", "spend": 21430370, "mua": 792, "win": true },
+        { "n": "Combo của nhà vô địch Hoàng Sao", "tuyen": "Tour du lịch", "spend": 6417211, "mua": 284 },
+        { "n": "Thời tiết 40 độ mà anh \"trông xe\"", "tuyen": "Tour du lịch", "spend": 1510156, "mua": 230 },
+        { "n": "Nắng nóng 40 độ Hoàng Sao xả stress", "tuyen": "Tour du lịch", "spend": 878128, "mua": 44 },
+        { "n": "Bí quyết mỗi trưa 40 độ", "tuyen": "Nghỉ trưa", "spend": 1974820, "mua": 42, "cut": true },
+        { "n": "Hoàng Sao \"đập hộp\" trải nghiệm", "tuyen": "Nghỉ trưa", "spend": 805958, "mua": 26 },
+        { "n": "Combo vô địch trước giải đấu", "tuyen": "Thera Studio", "spend": 165832, "mua": 5 }
+      ]
+    }
+  ]
+}
+;
+const vnd = n => "₫"+n.toLocaleString("vi-VN");
+const big = n => n.toLocaleString("vi-VN");
+const cpa = c => c.mua ? Math.round(c.spend/c.mua) : null;
+
+document.title = "Báo cáo Creative Hoàng Sao — " + D.meta.period;
+document.getElementById("codeb").textContent = "mã " + D.meta.code;
+document.getElementById("subhead").innerHTML = `Tài khoản <b>${D.meta.account}</b> · Kỳ <b>${D.meta.period}</b> · ${D.meta.generated}`;
+
+// Tổng hợp toàn bộ
+const allC = D.persons.flatMap(p=>p.creatives);
+const tSpend = allC.reduce((s,c)=>s+c.spend,0);
+const tMua = allC.reduce((s,c)=>s+c.mua,0);
+document.getElementById("kpis").innerHTML = [
+  {l:"Tổng chi tiêu", v:vnd(tSpend)},
+  {l:"Tổng lượt mua", v:big(tMua)},
+  {l:"CPA trung bình", v:vnd(Math.round(tSpend/tMua))},
+  {l:"Số creative", v:big(allC.length)},
+  {l:"Số người", v:big(D.persons.length)},
+].map(k=>`<div class="kpi"><div class="label">${k.l}</div><div class="val">${k.v}</div></div>`).join("");
+
+// Win box: creative nhiều mua nhất của mỗi người
+document.getElementById("winbox").innerHTML = D.persons.map(p=>{
+  const w = [...p.creatives].sort((a,b)=>b.mua-a.mua)[0];
+  return `<div class="wcard"><div class="who">⭐ ${p.name}</div>
+    <div class="cn">${w.n}</div>
+    <div class="st"><span class="big">${big(w.mua)}</span> lượt mua · CPA <span class="big">${vnd(cpa(w))}</span> · đã chi ${vnd(w.spend)}</div></div>`;
+}).join("");
+
+// Bảng từng người
+document.getElementById("persons").innerHTML = D.persons.map(p=>{
+  const cs=[...p.creatives].sort((a,b)=>b.mua-a.mua);
+  const ps=cs.reduce((s,c)=>s+c.spend,0), pm=cs.reduce((s,c)=>s+c.mua,0);
+  const rows=cs.map((c,i)=>{
+    const cls=c.win?"win":(c.cut?"cut":"");
+    const tag=c.win?" ⭐":(c.cut?" 🔴":"");
+    return `<tr class="${cls}"><td>${c.n}${tag}${c.tuyen?` <span class="tag">· ${c.tuyen}</span>`:""}</td>
+      <td class="num">${vnd(c.spend)}</td><td class="num b">${big(c.mua)}</td><td class="num">${c.mua?vnd(cpa(c)):"—"}</td></tr>`;
+  }).join("");
+  return `<div class="person-h">${p.name} <span class="tag">· ${cs.length} creative · ${big(pm)} lượt mua</span></div>
+  <table><thead><tr><th>Creative</th><th>Chi tiêu</th><th>Lượt mua</th><th>CPA</th></tr></thead>
+  <tbody>${rows}</tbody>
+  <tfoot><tr><td>TỔNG</td><td class="num">${vnd(ps)}</td><td class="num">${big(pm)}</td><td class="num">${vnd(Math.round(ps/pm))}</td></tr></tfoot></table>`;
+}).join("");
+
+document.getElementById("note").innerHTML = D.meta.note || "";
+</script>
+</body>
+</html>

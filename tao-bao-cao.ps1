@@ -7,11 +7,12 @@
     - reports\dashboard_<ten-file>.html   (lưu trữ theo tuần)
     - index.html                          (luôn = bản mới nhất)
 #>
-param([string]$DataFile, [switch]$NoIndex)
+param([string]$DataFile, [switch]$NoIndex, [string]$Template)
 
 $ErrorActionPreference = "Stop"
 $root      = Split-Path -Parent $MyInvocation.MyCommand.Path
-$tpl       = Join-Path $root "template\dashboard-template.html"
+if ($Template) { $tpl = if ([System.IO.Path]::IsPathRooted($Template)) { $Template } else { Join-Path $root $Template } }
+else { $tpl = Join-Path $root "template\dashboard-template.html" }
 $dataDir   = Join-Path $root "data"
 $reportDir = Join-Path $root "reports"
 if (-not (Test-Path $reportDir)) { New-Item -ItemType Directory -Path $reportDir | Out-Null }

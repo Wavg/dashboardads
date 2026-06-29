@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "period": "01–28/06/2026 (Tháng 6)",
+    "code": "10819",
+    "generated": "Tạo ngày 29/06/2026",
+    "note": "💡 <b>Hoàng không sao</b> mạnh ở nội dung gắn 'sếp Tùng' (Nhuộm Ombree 1.247 mua) & 'Spiky Mullet'. <b>Hoàng Sao</b> mạnh ở 'Sau giờ nghỉ trưa' (792 mua) — và đặc biệt 'Thời tiết 40 độ trông xe' CPA chỉ ₫6.566, RẺ NHẤT, rất đáng nhân rộng. 🔴 Nên tắt/làm lại 'Dự đoán kiểu tóc MV' (CPA ₫152.970).<br><span style='opacity:.8'>Đã gộp các bản quảng cáo trùng creative; số liệu cả tháng 6 (01–28). 'Lượt mua' kỳ vừa đóng có thể còn về thêm do attribution.</span>"
+  },
+  "persons": [
+    {
+      "name": "KOC Hoàng không sao",
+      "creatives": [
+        { "n": "Nhuộm màu sếp Tùng – bản Ombree", "tuyen": "Nhuộm", "spend": 26623789, "mua": 1247, "win": true },
+        { "n": "Spiky Mullet nhiều texture 2026", "tuyen": "Cắt/Combo", "spend": 11239510, "mua": 659 },
+        { "n": "Series Check VAR 1000 thợ", "tuyen": "Tour du lịch", "spend": 6595814, "mua": 235 },
+        { "n": "Mohawk Tapper hair style 2026", "tuyen": "Tour du lịch", "spend": 2193657, "mua": 91 },
+        { "n": "Dự đoán kiểu tóc MV sếp Tùng", "tuyen": "Cắt", "spend": 6424744, "mua": 42, "cut": true },
+        { "n": "Cắt tạo kiểu \"Người im lặng\"", "tuyen": "Combo", "spend": 426612, "mua": 33 },
+        { "n": "Check VAR Ngày 4 – Ivy uốn Hoàng Sao", "tuyen": "Uốn", "spend": 59739, "mua": 5 },
+        { "n": "Check VAR Ngày 2 – Biến hình trưởng phòng", "tuyen": "Uốn", "spend": 15392, "mua": 2 }
+      ]
+    },
+    {
+      "name": "KOL Hoàng Sao",
+      "creatives": [
+        { "n": "SAU GIỜ NGHỈ TRƯA, ANH SẼ LÀ AI", "tuyen": "Nghỉ trưa", "spend": 21430370, "mua": 792, "win": true },
+        { "n": "Combo của nhà vô địch Hoàng Sao", "tuyen": "Tour du lịch", "spend": 6417211, "mua": 284 },
+        { "n": "Thời tiết 40 độ mà anh \"trông xe\"", "tuyen": "Tour du lịch", "spend": 1510156, "mua": 230 },
+        { "n": "Nắng nóng 40 độ Hoàng Sao xả stress", "tuyen": "Tour du lịch", "spend": 878128, "mua": 44 },
+        { "n": "Bí quyết mỗi trưa 40 độ", "tuyen": "Nghỉ trưa", "spend": 1974820, "mua": 42, "cut": true },
+        { "n": "Hoàng Sao \"đập hộp\" trải nghiệm", "tuyen": "Nghỉ trưa", "spend": 805958, "mua": 26 },
+        { "n": "Combo vô địch trước giải đấu", "tuyen": "Thera Studio", "spend": 165832, "mua": 5 }
+      ]
+    }
+  ]
+}
