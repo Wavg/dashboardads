@@ -99,6 +99,9 @@
 <h2>🏆 Top 5 creative theo tuyến <span class="hint" style="font-weight:400">(xếp theo lượt mua → CPA rẻ · ⭐ CPA rẻ nhất tuyến · 🔴 đốt tiền nên cân nhắc tắt)</span></h2>
 <div id="creatives"></div>
 
+<h2 id="creators-h" style="display:none">🎤 Creative theo KOL/KOC</h2>
+<div id="creators"></div>
+
 <footer>Báo cáo tự sinh · Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · Nguồn: Meta Ads API</footer>
 
 <script>
@@ -214,6 +217,32 @@ document.getElementById("creatives").innerHTML = Object.entries(CREATIVE).map(([
   }).join("");
   return `<div class="tuyen"><h3><span>${ten}</span><span class="meta">${arr.length} quảng cáo · ${big(tmua)} lượt mua</span></h3>${rows}</div>`;
 }).join("");
+
+/* ===== Bảng creative theo KOL/KOC (tuỳ chọn — hiện khi có WEEK.creators) ===== */
+if (WEEK.creators && WEEK.creators.length){
+  document.getElementById("creators-h").style.display = "";
+  document.getElementById("creators").innerHTML = WEEK.creators.map(cr=>{
+    const ads=[...cr.ads].sort((a,b)=>b.mua-a.mua);
+    const tSpend=ads.reduce((s,a)=>s+a.spend,0);
+    const tMua=ads.reduce((s,a)=>s+a.mua,0);
+    const tCpa=tMua?Math.round(tSpend/tMua):null;
+    const tClicks=ads.reduce((s,a)=>s+a.ctr*(a.impr||0),0);
+    const rows=ads.map(a=>`<tr>
+      <td>${a.n}</td>
+      <td class="mut">${a.tuyen||""}</td>
+      <td class="num">${vnd(a.spend)}</td>
+      <td class="num b">${big(a.mua)}</td>
+      <td class="num">${a.mua?vnd(Math.round(a.spend/a.mua)):"—"}</td>
+      <td class="num">${pct(a.ctr)}</td>
+    </tr>`).join("");
+    return `<div class="sub" style="margin:0 0 8px">${cr.title} · ${ads.length} creative</div>
+    <table style="margin-bottom:18px">
+      <thead><tr><th>Creative</th><th>Tuyến</th><th>Chi tiêu</th><th>Lượt mua</th><th>CPA</th><th>CTR</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td>TỔNG (${ads.length})</td><td></td><td class="num">${vnd(tSpend)}</td><td class="num">${big(tMua)}</td><td class="num">${tCpa?vnd(tCpa):"—"}</td><td></td></tr></tfoot>
+    </table>`;
+  }).join("");
+}
 </script>
 </body>
 </html>

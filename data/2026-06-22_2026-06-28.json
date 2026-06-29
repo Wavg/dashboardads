@@ -46,5 +46,23 @@
       { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 3, "cpa": 279437, "spend": 838310, "ctr": 0.97 },
       { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 1, "cpa": 338173, "spend": 338173, "ctr": 0.24 }
     ]
-  }
+  },
+  "creators": [
+    {
+      "title": "KOL Hoàng Sao / KOC Hoàng không sao (mã 10819)",
+      "ads": [
+        { "n": "Nhuộm Ombree sếp Tùng (Nhuộm)", "tuyen": "Tóc đẹp đi làm", "spend": 616535, "mua": 8, "ctr": 1.11 },
+        { "n": "Combo vô địch trước giải đấu", "tuyen": "Thera Studio", "spend": 146385, "mua": 5, "ctr": 1.38 },
+        { "n": "Dự đoán kiểu tóc MV sếp Tùng (Cắt)", "tuyen": "Tóc đẹp đi làm", "spend": 1163091, "mua": 5, "ctr": 0.90 },
+        { "n": "Check VAR 1000 thợ (bản 01/06)", "tuyen": "Du lịch thư giãn 45 phút", "spend": 617024, "mua": 4, "ctr": 0.40 },
+        { "n": "SAU GIỜ NGHỈ TRƯA, ANH SẼ LÀ AI", "tuyen": "Nghỉ trưa", "spend": 1829937, "mua": 3, "ctr": 1.77 },
+        { "n": "Combo của nhà vô địch Hoàng Sao", "tuyen": "Du lịch thư giãn 45 phút", "spend": 637210, "mua": 3, "ctr": 0.34 },
+        { "n": "Spiky Mullet nhiều texture 2026", "tuyen": "Tóc đẹp đi làm", "spend": 200035, "mua": 2, "ctr": 0.23 },
+        { "n": "Hoàng Sao \"đập hộp\" trải nghiệm", "tuyen": "Nghỉ trưa", "spend": 79865, "mua": 1, "ctr": 0.56 },
+        { "n": "Check VAR 1000 thợ (bản cũ)", "tuyen": "Du lịch thư giãn 45 phút", "spend": 447438, "mua": 1, "ctr": 0.60 },
+        { "n": "Combo 45 phút căn hộ Thera cùng Hoàng Sao", "tuyen": "Thera Studio", "spend": 19447, "mua": 0, "ctr": 0.12 },
+        { "n": "Bí quyết mỗi trưa 40 độ", "tuyen": "Nghỉ trưa", "spend": 5387, "mua": 0, "ctr": 0.38 }
+      ]
+    }
+  ]
 }

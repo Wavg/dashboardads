@@ -99,6 +99,9 @@
 <h2>🏆 Top 5 creative theo tuyến <span class="hint" style="font-weight:400">(xếp theo lượt mua → CPA rẻ · ⭐ CPA rẻ nhất tuyến · 🔴 đốt tiền nên cân nhắc tắt)</span></h2>
 <div id="creatives"></div>
 
+<h2 id="creators-h" style="display:none">🎤 Creative theo KOL/KOC</h2>
+<div id="creators"></div>
+
 <footer>Báo cáo tự sinh · Lượt mua = purchase (omni_purchase) · CPA = Chi tiêu ÷ Lượt mua · Nguồn: Meta Ads API</footer>
 
 <script>
@@ -151,7 +154,25 @@ const WEEK = {
       { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 3, "cpa": 279437, "spend": 838310, "ctr": 0.97 },
       { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 1, "cpa": 338173, "spend": 338173, "ctr": 0.24 }
     ]
-  }
+  },
+  "creators": [
+    {
+      "title": "KOL Hoàng Sao / KOC Hoàng không sao (mã 10819)",
+      "ads": [
+        { "n": "Nhuộm Ombree sếp Tùng (Nhuộm)", "tuyen": "Tóc đẹp đi làm", "spend": 616535, "mua": 8, "ctr": 1.11 },
+        { "n": "Combo vô địch trước giải đấu", "tuyen": "Thera Studio", "spend": 146385, "mua": 5, "ctr": 1.38 },
+        { "n": "Dự đoán kiểu tóc MV sếp Tùng (Cắt)", "tuyen": "Tóc đẹp đi làm", "spend": 1163091, "mua": 5, "ctr": 0.90 },
+        { "n": "Check VAR 1000 thợ (bản 01/06)", "tuyen": "Du lịch thư giãn 45 phút", "spend": 617024, "mua": 4, "ctr": 0.40 },
+        { "n": "SAU GIỜ NGHỈ TRƯA, ANH SẼ LÀ AI", "tuyen": "Nghỉ trưa", "spend": 1829937, "mua": 3, "ctr": 1.77 },
+        { "n": "Combo của nhà vô địch Hoàng Sao", "tuyen": "Du lịch thư giãn 45 phút", "spend": 637210, "mua": 3, "ctr": 0.34 },
+        { "n": "Spiky Mullet nhiều texture 2026", "tuyen": "Tóc đẹp đi làm", "spend": 200035, "mua": 2, "ctr": 0.23 },
+        { "n": "Hoàng Sao \"đập hộp\" trải nghiệm", "tuyen": "Nghỉ trưa", "spend": 79865, "mua": 1, "ctr": 0.56 },
+        { "n": "Check VAR 1000 thợ (bản cũ)", "tuyen": "Du lịch thư giãn 45 phút", "spend": 447438, "mua": 1, "ctr": 0.60 },
+        { "n": "Combo 45 phút căn hộ Thera cùng Hoàng Sao", "tuyen": "Thera Studio", "spend": 19447, "mua": 0, "ctr": 0.12 },
+        { "n": "Bí quyết mỗi trưa 40 độ", "tuyen": "Nghỉ trưa", "spend": 5387, "mua": 0, "ctr": 0.38 }
+      ]
+    }
+  ]
 }
 ;
 /* ================================================================= */
@@ -264,6 +285,32 @@ document.getElementById("creatives").innerHTML = Object.entries(CREATIVE).map(([
   }).join("");
   return `<div class="tuyen"><h3><span>${ten}</span><span class="meta">${arr.length} quảng cáo · ${big(tmua)} lượt mua</span></h3>${rows}</div>`;
 }).join("");
+
+/* ===== Bảng creative theo KOL/KOC (tuỳ chọn — hiện khi có WEEK.creators) ===== */
+if (WEEK.creators && WEEK.creators.length){
+  document.getElementById("creators-h").style.display = "";
+  document.getElementById("creators").innerHTML = WEEK.creators.map(cr=>{
+    const ads=[...cr.ads].sort((a,b)=>b.mua-a.mua);
+    const tSpend=ads.reduce((s,a)=>s+a.spend,0);
+    const tMua=ads.reduce((s,a)=>s+a.mua,0);
+    const tCpa=tMua?Math.round(tSpend/tMua):null;
+    const tClicks=ads.reduce((s,a)=>s+a.ctr*(a.impr||0),0);
+    const rows=ads.map(a=>`<tr>
+      <td>${a.n}</td>
+      <td class="mut">${a.tuyen||""}</td>
+      <td class="num">${vnd(a.spend)}</td>
+      <td class="num b">${big(a.mua)}</td>
+      <td class="num">${a.mua?vnd(Math.round(a.spend/a.mua)):"—"}</td>
+      <td class="num">${pct(a.ctr)}</td>
+    </tr>`).join("");
+    return `<div class="sub" style="margin:0 0 8px">${cr.title} · ${ads.length} creative</div>
+    <table style="margin-bottom:18px">
+      <thead><tr><th>Creative</th><th>Tuyến</th><th>Chi tiêu</th><th>Lượt mua</th><th>CPA</th><th>CTR</th></tr></thead>
+      <tbody>${rows}</tbody>
+      <tfoot><tr><td>TỔNG (${ads.length})</td><td></td><td class="num">${vnd(tSpend)}</td><td class="num">${big(tMua)}</td><td class="num">${tCpa?vnd(tCpa):"—"}</td><td></td></tr></tfoot>
+    </table>`;
+  }).join("");
+}
 </script>
 </body>
 </html>
