@@ -3,13 +3,12 @@
     "account": "Adsplus 5 - 30shine - Tỉnh",
     "week": "22/06 (T2) → 28/06 (CN) /2026",
     "generated": "Cập nhật ngày 29/06/2026",
-    "targetCpa": 72000,
+    "targetCpa": 30092,
     "monthGoal": {
-      "budget": 978000000, "customers": 13585, "cpa": 72000, "bill": 230000,
-      "fb": 651000000, "tiktok": 196000000, "google": 51000000, "duluan": 10000000, "crm": 70000000
+      "cpaTarget": 30092, "fbBudget": 651000000, "totBudget": 978000000, "totCustomers": 32500, "bill": 230000
     },
     "month5tuyen": { "spend": 340777696, "customers": 4862, "cpa": 70090 },
-    "goalSrc": "Nguồn: sheet 'Tiến độ chi tiêu' — MỤC TIÊU THÁNG 6 (tài khoản Tỉnh, toàn kênh)"
+    "goalSrc": "Target gốc T6 (sheet Tiến độ chi tiêu): Chi 978M · 32.500 khách · CPA 30.092đ. Báo cáo này chỉ tập trung phần FACEBOOK (ngân sách FB 651tr)."
   },
   "tuyen": [
     { "ten": "Du lịch thư giãn 45 phút", "spend": 26970307, "impr": 2475724, "reach": 1257946, "freq": 1.97, "cpm": 10894, "clicks": 14232, "ctr": 0.57, "mua": 226 },

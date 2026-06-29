@@ -98,9 +98,9 @@ document.getElementById("subhead").innerHTML=`Tài khoản <b>${M.account}</b> �
 const G=M.monthGoal;
 if(G){
   const m5=M.month5tuyen||{};
-  const dat = (m5.cpa && m5.cpa<=G.cpa) ? '<span class="ok">(đạt mục tiêu CPA ✔)</span>' : '<span class="miss">(vượt CPA)</span>';
+  const dat = (m5.cpa && m5.cpa<=G.cpaTarget) ? '<span class="ok">(đạt target ✔)</span>' : '<span class="miss">(vượt target)</span>';
   const gb=document.getElementById("goalbanner"); gb.style.display="";
-  gb.innerHTML=`🎯 <b>Mục tiêu Tháng 6 (tài khoản Tỉnh · toàn kênh):</b> Ngân sách <b>${vnd(G.budget)}</b> · <b>${big(G.customers)}</b> khách · CPA mục tiêu <b>${vnd(G.cpa)}</b> · Bill ${vnd(G.bill)}.<br>↳ 5 tuyến Demand (Facebook) đóng góp cả tháng 6: <b>${vnd(m5.spend)}</b> chi · <b>${big(m5.customers)}</b> khách · CPA <b>${vnd(m5.cpa)}</b> ${dat}. <span style="opacity:.7;font-size:11.5px">${M.goalSrc||""}</span>`;
+  gb.innerHTML=`🎯 <b>Mục tiêu Tháng 6 — phần FACEBOOK:</b> CPA mục tiêu <b>${vnd(G.cpaTarget)}</b> · Ngân sách FB <b>${vnd(G.fbBudget)}</b> <span style="opacity:.75">(trong tổng ${vnd(G.totBudget)} / ${big(G.totCustomers)} khách toàn kênh)</span>.<br>↳ 5 tuyến Demand (FB) cả tháng 6: <b>${vnd(m5.spend)}</b> chi · <b>${big(m5.customers)}</b> khách (omni_purchase) · CPA <b>${vnd(m5.cpa)}</b> ${dat}.<br><span style="opacity:.72;font-size:11.5px">⚠️ CPA FB đếm theo omni_purchase nên cao hơn target gộp 30k; ${M.goalSrc||""}</span>`;
 }
 
 const T=D.tuyen;
