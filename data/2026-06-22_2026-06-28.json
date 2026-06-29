@@ -1,0 +1,50 @@
+{
+  "meta": {
+    "account": "Adsplus 5 - 30shine - Tỉnh",
+    "week": "22/06 (T2) → 28/06 (CN) /2026",
+    "prev": "15–21/06",
+    "generated": "Tạo ngày 29/06/2026"
+  },
+  "tuyen": [
+    { "ten": "Du lịch thư giãn 45 phút", "spend": 26969699, "mua": 170, "impr": 2475708, "reach": 1257946, "ctr": 0.57, "pSpend": 60092527, "pMua": 450 },
+    { "ten": "Tóc đẹp đi làm",           "spend": 18906027, "mua": 166, "impr": 1790669, "reach": 1013247, "ctr": 0.37, "pSpend": 46008279, "pMua": 454 },
+    { "ten": "Thera Studio",             "spend": 9328094,  "mua": 66,  "impr": 862642,  "reach": 572664,  "ctr": 0.26, "pSpend": 36858951, "pMua": 319 },
+    { "ten": "Nghỉ trưa",                "spend": 10700096, "mua": 57,  "impr": 1024762, "reach": 652701,  "ctr": 0.48, "pSpend": 28968532, "pMua": 276 },
+    { "ten": "Tan làm",                  "spend": 5414446,  "mua": 29,  "impr": 583229,  "reach": 420001,  "ctr": 0.16, "pSpend": 19599464, "pMua": 152 }
+  ],
+  "creative": {
+    "Du lịch thư giãn 45 phút": [
+      { "n": "Không KOC – \"Argen ăn mừng Hattrick\"", "mua": 55, "cpa": 232915, "spend": 12810307, "ctr": 0.21, "cut": true },
+      { "n": "Không KOC – \"Tour du lịch không cần nghỉ phép\"", "mua": 27, "cpa": 103866, "spend": 2804397, "ctr": 0.84 },
+      { "n": "Không KOC – \"Du lịch Retreat: bật chế độ offline 45 phút\"", "mua": 15, "cpa": 27709, "spend": 415633, "ctr": 0.11, "win": true },
+      { "n": "KOC Nguyễn Hoàng Anh – \"Lần Đầu tại 30Shine\"", "mua": 12, "cpa": 180925, "spend": 2171102, "ctr": 3.47 },
+      { "n": "Không KOC – \"Ngồi máy 10-12 tiếng, ánh sáng xanh\"", "mua": 12, "cpa": 121013, "spend": 1452150, "ctr": 0.63 }
+    ],
+    "Tóc đẹp đi làm": [
+      { "n": "Không KOC – \"Dọn mái tóc dày cộp\" (Gội)", "mua": 64, "cpa": 130841, "spend": 8373822, "ctr": 0.04, "cut": true },
+      { "n": "KOC Tường Phát – \"Cut tóc đón hè\"", "mua": 18, "cpa": 127906, "spend": 2302306, "ctr": 1.30 },
+      { "n": "KOC Ngọc Sơn – \"Các vợ ơi, đưa chồng đi làm đẹp\"", "mua": 13, "cpa": 42223, "spend": 548900, "ctr": 0.98, "win": true },
+      { "n": "KOC Sang Nguyễn – \"Uốn nhẹ + lấy ráy tai\"", "mua": 9, "cpa": 152713, "spend": 1374416, "ctr": 1.92 },
+      { "n": "KOC Hoàng – \"Nhuộm Ombree sếp Tùng\"", "mua": 8, "cpa": 77067, "spend": 616535, "ctr": 1.11 }
+    ],
+    "Thera Studio": [
+      { "n": "Không KOC – \"Góc bình yên lánh áp lực\"", "mua": 27, "cpa": 188011, "spend": 5076307, "ctr": 0.14, "cut": true },
+      { "n": "Không KOC – \"Tài chính dưới 2 tỷ sở hữu căn Thera\"", "mua": 9, "cpa": 63537, "spend": 571833, "ctr": 0.40 },
+      { "n": "Concept Thera 1 Ngủ – \"Gỡ rối cổ vai gáy\"", "mua": 6, "cpa": 103184, "spend": 619106, "ctr": 0.81 },
+      { "n": "KOL Hoàng Sao – \"Combo vô địch trước giải đấu\"", "mua": 5, "cpa": 29277, "spend": 146385, "ctr": 1.38, "win": true },
+      { "n": "Không KOC – \"Cày cuốc an cư lạc nghiệp\"", "mua": 5, "cpa": 220173, "spend": 1100863, "ctr": 0.62 }
+    ],
+    "Nghỉ trưa": [
+      { "n": "Không KOC – \"Giải nhiệt da đầu\" (Gội)", "mua": 28, "cpa": 134251, "spend": 3759023, "ctr": 0.20 },
+      { "n": "Không KOC – \"Điểm danh đêm nay thức trắng\"", "mua": 12, "cpa": 61723, "spend": 740675, "ctr": 0.59, "win": true },
+      { "n": "Không KOC – \"Chợp mắt 45 phút\" (Gội)", "mua": 10, "cpa": 291737, "spend": 2917372, "ctr": 0.07, "cut": true },
+      { "n": "Không KOC – \"Chấp mọi KPI\"", "mua": 3, "cpa": 455736, "spend": 1367209, "ctr": 1.81 },
+      { "n": "KOL Hoàng Sao – \"Sau giờ nghỉ trưa anh sẽ là ai\"", "mua": 3, "cpa": 609979, "spend": 1829937, "ctr": 1.77 }
+    ],
+    "Tan làm": [
+      { "n": "Không KOC – \"Vai gáy căng cứng\" (Gội)", "mua": 25, "cpa": 169519, "spend": 4237963, "ctr": 0.06 },
+      { "n": "KOC Tường Phát – \"KOC luôn chú trọng\"", "mua": 3, "cpa": 279437, "spend": 838310, "ctr": 0.97 },
+      { "n": "KOC Trương Minh Khoa – \"Tan làm sớm một hôm\"", "mua": 1, "cpa": 338173, "spend": 338173, "ctr": 0.24 }
+    ]
+  }
+}
