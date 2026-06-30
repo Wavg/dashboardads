@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Salon — Doanh thu ↔ Chi Meta Ads · Nhượng quyền T6/2026</title>
+<style>
+:root{--bg:#0f1419;--card:#1a212b;--card2:#212b37;--line:#2c3845;--txt:#e6edf3;--mut:#8b98a8;--good:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#263241;--accent:#4f9dff;--vio:#7b5cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45;padding:24px;max-width:1280px;margin:0 auto}
+h1{font-size:22px;font-weight:700}.sub{color:var(--mut);font-size:13px;margin-top:4px}
+.head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.kpi .l{font-size:11px;color:var(--mut);text-transform:uppercase}.kpi .v{font-size:20px;font-weight:700;margin-top:4px}
+.bar{position:sticky;top:0;background:var(--bg);padding:10px 0;z-index:5;border-bottom:1px solid var(--line);margin-bottom:8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+input{flex:1;min-width:200px;background:#0c1117;border:1px solid var(--line);border-radius:8px;color:var(--txt);padding:8px 12px;font-size:13px}
+.btn{background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--mut);padding:8px 12px;font-size:12.5px;cursor:pointer;font-weight:600}
+.btn.on{border-color:var(--accent);color:var(--txt);background:#1f2935}
+.vung{margin-bottom:16px}
+.vh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center;padding:9px 14px;background:linear-gradient(90deg,rgba(123,92,255,.12),transparent);border-left:3px solid var(--vio);border-radius:6px;margin-bottom:6px}
+.vh .nm{font-weight:700;font-size:14px}.vh .meta{font-size:12px;color:var(--mut)}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:13px}
+th,td{padding:8px 11px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child{text-align:left;white-space:normal}
+thead th{background:var(--card2);color:var(--mut);font-weight:600;font-size:10.5px;text-transform:uppercase}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#1f2935}
+.b{font-weight:700}.mut{color:var(--mut)}.num{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.p-good{background:rgba(63,185,80,.15);color:var(--good)}.p-warn{background:rgba(210,153,34,.15);color:var(--warn)}.p-bad{background:rgba(248,81,73,.15);color:var(--bad)}.p-mut{background:var(--chip);color:var(--mut)}
+.noad td{opacity:.72}
+.note{background:rgba(79,157,255,.07);border:1px solid rgba(79,157,255,.25);border-radius:10px;padding:11px 14px;font-size:12.5px;color:#cfe0f5;margin:14px 0}
+footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:12px;color:var(--mut);text-align:center}
+@media(max-width:760px){th:nth-child(5),td:nth-child(5),th:nth-child(3),td:nth-child(3){display:none}}
+</style></head>
+<body>
+<div class="head"><h1>🏪 Salon: Doanh thu ↔ Chi Meta Ads <span class="badge">Nhượng quyền · Tháng 6/2026</span></h1>
+<div class="sub">Đối chiếu doanh thu & khách thật (Power BI) với chi tiêu Meta Ads · "Chi/KH mới" = chi Meta ÷ khách mới thật (gồm cả organic)</div></div>
+<div class="kpis" id="kpis"></div>
+<div class="note" id="overview"></div>
+<div class="bar">
+  <input id="q" placeholder="🔎 Lọc theo tên salon / vùng...">
+  <button class="btn on" data-f="all">Tất cả</button>
+  <button class="btn" data-f="ad">Đang chạy ads</button>
+  <button class="btn" data-f="noad">Không chạy ads</button>
+  <button class="btn" data-f="bad">Đắt cần tối ưu</button>
+</div>
+<div id="list"></div>
+<footer>Nguồn: Meta Ads API (chi tiêu T6) + Power BI (doanh thu/khách) · Mua = omni_purchase qua Mess · CPA Meta = chi ÷ mua</footer>
+<script>
+const S=[
+{n:"112 PQ",v:"Tôn Cương · Q1-Bình Thạnh-Phú Nhuận",dt:603134365,kh:2101,aov:287070,m:144,a:8473241,mu:67},
+{n:"27A NVL",v:"Tôn Cương · Q1-Bình Thạnh-Phú Nhuận",dt:491513805,kh:2039,aov:241056,m:261,a:5827338,mu:123},
+{n:"359 LQD",v:"Tôn Cương · Q1-Bình Thạnh-Phú Nhuận",dt:428412982,kh:1740,aov:246214,m:144,a:5831384,mu:72},
+{n:"77 PVC",v:"Tôn Cương · Q1-Bình Thạnh-Phú Nhuận",dt:365131979,kh:1539,aov:237253,m:269,a:5850716,mu:2},
+{n:"170 NTL",v:"Tôn Cương · Q1-Bình Thạnh-Phú Nhuận",dt:277108282,kh:1191,aov:232669,m:107,a:5835232,mu:142},
+{n:"VINSMART PZ4",v:"Trung Đức · Đông Hà Nội",dt:444491734,kh:1990,aov:223363,m:246,a:0,mu:0},
+{n:"Royal City",v:"Trung Đức · Đông Hà Nội",dt:297643272,kh:928,aov:320736,m:114,a:0,mu:0},
+{n:"63B TDT",v:"Trung Đức · Đông Hà Nội",dt:212332985,kh:888,aov:239114,m:72,a:845542,mu:7},
+{n:"82 VTP",v:"Trung Đức · Đông Hà Nội",dt:171926841,kh:778,aov:220986,m:40,a:0,mu:0},
+{n:"90 TDH",v:"Trung Đức · Đông Hà Nội",dt:176741684,kh:759,aov:232861,m:49,a:0,mu:0},
+{n:"26 TT",v:"Trung Đức · Đông Hà Nội",dt:79366714,kh:514,aov:154410,m:111,a:0,mu:0},
+{n:"BP TT",v:"Trung Đức · Đông Hà Nội",dt:82088081,kh:487,aov:168559,m:127,a:0,mu:0},
+{n:"406 TNM VT",v:"Xuân Quyền · Bà Rịa-Vũng Tàu",dt:362481264,kh:1472,aov:246251,m:264,a:5798796,mu:3},
+{n:"344 CMT8 VT",v:"Xuân Quyền · Bà Rịa-Vũng Tàu",dt:319892615,kh:1336,aov:239441,m:231,a:5840390,mu:1},
+{n:"504 30T4",v:"Xuân Quyền · Bà Rịa-Vũng Tàu",dt:126130000,kh:693,aov:182006,m:137,a:0,mu:0},
+{n:"345 NVL DN",v:"Việt Cường · Đà Nẵng-Nha Trang",dt:386569643,kh:1601,aov:241455,m:399,a:0,mu:0},
+{n:"130 XVNT DN",v:"Việt Cường · Đà Nẵng-Nha Trang",dt:285087333,kh:1105,aov:257998,m:196,a:18012270,mu:19},
+{n:"35 HB NT",v:"Việt Cường · Đà Nẵng-Nha Trang",dt:184240250,kh:783,aov:235300,m:194,a:11659052,mu:8},
+{n:"177 DVB",v:"Tôn Cương · Thủ Đức",dt:236660468,kh:973,aov:243228,m:64,a:1320347,mu:19},
+{n:"356 DXH",v:"Tôn Cương · Thủ Đức",dt:218871638,kh:973,aov:224945,m:112,a:343773,mu:3},
+{n:"99 LVV",v:"Tôn Cương · Thủ Đức",dt:183646063,kh:831,aov:220994,m:77,a:0,mu:0},
+{n:"411 NVT",v:"Tôn Cương · Thủ Đức",dt:115681049,kh:565,aov:220108,m:65,a:0,mu:0},
+{n:"205 30T4 CT",v:"Xuân Quyền · Cần Thơ",dt:459162928,kh:1921,aov:239023,m:252,a:0,mu:0},
+{n:"161 NVC",v:"Xuân Quyền · Cần Thơ",dt:86560067,kh:441,aov:196281,m:61,a:0,mu:0},
+{n:"104 CB",v:"Hồng Gấm · Nam Hà Nội",dt:151535493,kh:791,aov:191575,m:83,a:0,mu:0},
+{n:"14 LN",v:"Hồng Gấm · Nam Hà Nội",dt:152950013,kh:785,aov:194841,m:103,a:0,mu:0},
+{n:"55 TH",v:"Hồng Gấm · Nam Hà Nội",dt:137330627,kh:595,aov:230808,m:70,a:0,mu:0},
+{n:"68 NT",v:"Thanh Sang · Q10-11-5-6-BC-BT",dt:311657994,kh:1245,aov:250328,m:112,a:5813478,mu:82},
+{n:"671 QL50",v:"Thanh Sang · Q10-11-5-6-BC-BT",dt:147083803,kh:749,aov:196374,m:77,a:0,mu:0},
+{n:"A6 NAT",v:"Thanh Sang · Q12 HCM",dt:371647494,kh:1619,aov:229554,m:213,a:5768787,mu:15},
+{n:"O12L2 22T12 BD (65 22T12)",v:"Việt Cường · Thuận An BD",dt:145617353,kh:632,aov:230407,m:106,a:23289558,mu:44},
+{n:"14AD4 BD",v:"Việt Cường · Thuận An BD",dt:135581837,kh:615,aov:220458,m:90,a:0,mu:0},
+{n:"185 30T4 BD",v:"Việt Cường · Thủ Dầu BD",dt:145446169,kh:672,aov:216438,m:125,a:0,mu:0},
+{n:"13 BH2",v:"Việt Cường · Thủ Dầu BD",dt:102903550,kh:476,aov:216184,m:104,a:0,mu:0},
+{n:"205 LT HP",v:"Hồng Gấm · Tỉnh phía Bắc",dt:233120310,kh:1008,aov:231270,m:134,a:0,mu:0},
+{n:"113 LTK TG",v:"Xuân Quyền · Mỹ Tho",dt:185609336,kh:992,aov:187106,m:148,a:6101775,mu:5},
+{n:"484 NTH QN",v:"Thanh Sang · Quy Nhơn",dt:200107100,kh:922,aov:217036,m:223,a:13220923,mu:16},
+{n:"01 TQT BL LD",v:"Việt Cường · Lâm Đồng",dt:152977143,kh:735,aov:208132,m:215,a:0,mu:0},
+{n:"TG 25/4 QN",v:"TT13 · Tỉnh phía Bắc",dt:149830546,kh:619,aov:242053,m:118,a:0,mu:0},
+{n:"357 LACASTA",v:"Trung Đức · Hà Đông",dt:117464462,kh:613,aov:191622,m:67,a:0,mu:0},
+{n:"872 QL22",v:"TT07 · Q12-Củ Chi-Long Xuyên",dt:134694563,kh:578,aov:233036,m:78,a:0,mu:0},
+{n:"99 TĐT ĐT",v:"Xuân Quyền · Cao Lãnh",dt:85212857,kh:569,aov:149759,m:214,a:5858427,mu:12},
+{n:"F33 HV PT",v:"Thanh Sang · Phan Thiết",dt:101324000,kh:523,aov:193736,m:204,a:0,mu:0},
+{n:"27 NT DN",v:"Việt Cường · Long Khánh",dt:132179000,kh:517,aov:255665,m:290,a:11736342,mu:6},
+{n:"135 LD",v:"Tôn Cương · Long Thành",dt:109029000,kh:510,aov:213782,m:100,a:1762954,mu:5},
+{n:"152 NO",v:"Văn Quang · Gò Vấp-Q12",dt:117401785,kh:493,aov:238137,m:55,a:0,mu:0},
+{n:"93 NTMK",v:"Thị Huệ · Tỉnh miền Trung",dt:53656953,kh:247,aov:217235,m:56,a:0,mu:0}
+];
+const vnd=n=>"₫"+Math.round(n).toLocaleString("vi-VN");const big=n=>Math.round(n).toLocaleString("vi-VN");const M=n=>(n/1e6).toLocaleString("vi-VN",{maximumFractionDigits:0})+"tr";const pc=n=>(n*100).toLocaleString("vi-VN",{maximumFractionDigits:1})+"%";
+function ev(s){
+  const ck=s.a?s.a/s.m:0;
+  if(s.a===0) return s.dt>=300e6?{t:"Không ads · DT cao → cân nhắc scale",c:"p-warn",g:"noad"}:{t:"Không ads (organic)",c:"p-mut",g:"noad"};
+  const vo=s.a>1e6&&s.mu<=5&&s.m>50;
+  if(ck<=35000) return {t:vo?"Hiệu quả · ⚠️Mess vỡ":"Hiệu quả tốt",c:"p-good",g:"ad"};
+  if(ck<=65000) return {t:"Trung bình",c:"p-warn",g:"ad"};
+  return {t:"Đắt — cần tối ưu",c:"p-bad",g:"bad"};
+}
+S.forEach(s=>{s.ck=s.a?Math.round(s.a/s.m):0;s.e=ev(s);});
+// KPI
+const adS=S.filter(s=>s.a>0),tDT=S.reduce((x,s)=>x+s.dt,0),tKM=S.reduce((x,s)=>x+s.m,0),tA=S.reduce((x,s)=>x+s.a,0);
+document.getElementById("kpis").innerHTML=[
+ {l:"Tổng salon",v:big(S.length)},{l:"Đang chạy ads",v:big(adS.length)},{l:"Không chạy ads",v:big(S.length-adS.length)},
+ {l:"Tổng chi Meta",v:vnd(tA)},{l:"Tổng KH mới",v:big(tKM)},{l:"Chi Meta / KH mới (gộp)",v:vnd(tA/adS.reduce((x,s)=>x+s.m,0))}
+].map(k=>`<div class="kpi"><div class="l">${k.l}</div><div class="v">${k.v}</div></div>`).join("");
+// overview
+const bad=S.filter(s=>s.e.g==="bad"),noAdHi=S.filter(s=>s.a===0&&s.dt>=280e6).sort((a,b)=>b.dt-a.dt),vo=S.filter(s=>s.a>1e6&&s.mu<=5&&s.m>50);
+document.getElementById("overview").innerHTML=
+`📌 <b>Tổng quan:</b> ${adS.length}/${S.length} salon đang chạy ads (chi <b>${vnd(tA)}</b> T6). `+
+`🔴 <b>Đắt cần tối ưu:</b> ${bad.map(s=>s.n+" ("+vnd(s.ck)+"/KH)").join(", ")||"—"}. `+
+`⚠️ <b>Mess vỡ nhưng khách thật cao</b> (đánh giá theo khách, đừng tắt): ${vo.map(s=>s.n).join(", ")}. `+
+`💤 <b>DT cao nhưng KHÔNG chạy ads:</b> ${noAdHi.map(s=>s.n+" ("+M(s.dt)+", "+s.m+" KH mới)").join(" · ")}.`;
+let FILTER="all",Q="";
+function render(){
+  const list=document.getElementById("list");
+  const fs=S.filter(s=>{
+    if(Q&&!(s.n.toLowerCase().includes(Q)||s.v.toLowerCase().includes(Q)))return false;
+    if(FILTER==="ad")return s.a>0; if(FILTER==="noad")return s.a===0; if(FILTER==="bad")return s.e.g==="bad"; return true;
+  });
+  const groups={};fs.forEach(s=>{(groups[s.v]=groups[s.v]||[]).push(s)});
+  const order=Object.keys(groups).sort((a,b)=>groups[b].reduce((x,s)=>x+s.dt,0)-groups[a].reduce((x,s)=>x+s.dt,0));
+  list.innerHTML=order.map(v=>{
+    const g=groups[v].sort((a,b)=>b.dt-a.dt);
+    const dt=g.reduce((x,s)=>x+s.dt,0),km=g.reduce((x,s)=>x+s.m,0),a=g.reduce((x,s)=>x+s.a,0);
+    const rows=g.map(s=>`<tr class="${s.a?'':'noad'}">
+      <td><b>${s.n}</b></td>
+      <td class="num">${M(s.dt)}</td>
+      <td class="num mut">${big(s.kh)}</td>
+      <td class="num b">${big(s.m)}</td>
+      <td class="num mut">${vnd(s.aov)}</td>
+      <td class="num">${s.a?vnd(s.a):'<span class="mut">—</span>'}</td>
+      <td class="num">${s.a?big(s.mu):'<span class="mut">—</span>'}</td>
+      <td class="num">${s.a?vnd(s.ck):'<span class="mut">—</span>'}</td>
+      <td style="text-align:center"><span class="pill ${s.e.c}">${s.e.t}</span></td></tr>`).join("");
+    return `<div class="vung"><div class="vh"><span class="nm">▸ ${v}</span><span class="meta">${g.length} salon · DT <b>${M(dt)}</b> · <b>${big(km)}</b> KH mới · chi Meta <b>${a?M(a):'0'}</b></span></div>
+    <table><thead><tr><th>Salon</th><th>Doanh thu</th><th>Tổng KH</th><th>KH mới</th><th>AOV</th><th>Chi Meta</th><th>Mua(Mess)</th><th>Chi/KH mới</th><th>Đánh giá</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  }).join("")||'<div class="note">Không có salon khớp bộ lọc.</div>';
+}
+render();
+document.getElementById("q").addEventListener("input",e=>{Q=e.target.value.toLowerCase();render();});
+document.querySelectorAll(".btn").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".btn").forEach(x=>x.classList.remove("on"));b.classList.add("on");FILTER=b.dataset.f;render();}));
+</script></body></html>
