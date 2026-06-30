@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NQ Ads — Salon nào chi, hiệu quả, vấn đề · T6/2026</title>
+<style>
+:root{--bg:#0f1419;--card:#1a212b;--card2:#212b37;--line:#2c3845;--txt:#e6edf3;--mut:#8b98a8;--good:#3fb950;--warn:#d29922;--bad:#f85149;--chip:#263241;--accent:#4f9dff;--vio:#7b5cff}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt);line-height:1.45;padding:22px;max-width:1340px;margin:0 auto}
+h1{font-size:21px;font-weight:700}.sub{color:var(--mut);font-size:13px;margin-top:4px}
+.head{border-bottom:1px solid var(--line);padding-bottom:16px;margin-bottom:8px}
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:20px;background:var(--chip);color:var(--mut);margin-left:6px}
+h2{font-size:16px;font-weight:700;margin:26px 0 4px;display:flex;align-items:center;gap:8px}
+.h2s{color:var(--mut);font-size:12px;margin-bottom:10px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:10px;margin:16px 0}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}.kpi .l{font-size:11px;color:var(--mut);text-transform:uppercase}.kpi .v{font-size:20px;font-weight:700;margin-top:4px}
+.note{border-radius:10px;padding:11px 14px;font-size:12.5px;margin:12px 0}
+.note.blue{background:rgba(79,157,255,.08);border:1px solid rgba(79,157,255,.28);color:#cfe0f5}
+.note.red{background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.28);color:#f7c9c6}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12.5px}
+th,td{padding:7px 9px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th:first-child,td:first-child,td.vd,th.vd{text-align:left;white-space:normal}
+td.vd{min-width:300px;color:#dfe7ef;font-size:12px}
+thead th{background:var(--card2);color:var(--mut);font-weight:600;font-size:10px;text-transform:uppercase}
+tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#1f2935}
+.b{font-weight:700}.mut{color:var(--mut)}.num{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10.5px;font-weight:700}
+.p-good{background:rgba(63,185,80,.15);color:var(--good)}.p-warn{background:rgba(210,153,34,.15);color:var(--warn)}.p-bad{background:rgba(248,81,73,.15);color:var(--bad)}.p-mut{background:var(--chip);color:var(--mut)}
+.red{color:var(--bad)}.grn{color:var(--good)}.org{color:var(--warn)}
+footer{margin-top:24px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mut);text-align:center}
+</style></head>
+<body>
+<div class="head"><h1>📑 Nhượng quyền · Ads tháng 6 — chi · hiệu quả · vấn đề <span class="badge">act_1849179835835714</span></h1>
+<div class="sub">Đối chiếu chi Meta ↔ Khách mới thật (Power BI). CR-Mess = mua omni_purchase ÷ click. Chi/KH mới = chi Meta ÷ khách mới thật (gồm organic).</div></div>
+<div class="kpis" id="kpis"></div>
+<div class="note red" id="alert"></div>
+<div class="note blue" id="ov"></div>
+
+<h2>① Salon ĐANG CHI ADS <span class="badge" id="cAd"></span></h2>
+<div class="h2s">Sắp theo chi tiêu giảm dần · 🔴 = Mess vỡ/đắt · 🟢 = ổn · 🟡 = cần chú ý</div>
+<table id="tAd"><thead><tr>
+<th>Salon</th><th>Vùng</th><th>DT</th><th>KH mới</th><th>Chi Meta</th><th>Mua Mess</th><th>CR-Mess</th><th>CPM</th><th>CTR</th><th>Tần suất</th><th>CPA Meta</th><th>Chi/KH mới</th><th>TT</th><th class="vd">⚠️ Vấn đề</th>
+</tr></thead><tbody></tbody></table>
+
+<h2>② Salon KHÔNG CHI ADS <span class="badge" id="cNo"></span></h2>
+<div class="h2s">Có doanh thu/khách nhưng 0 đồng ads tháng 6 · sắp theo DT giảm dần</div>
+<table id="tNo"><thead><tr>
+<th>Salon</th><th>Vùng</th><th>DT</th><th>Tổng KH</th><th>KH mới</th><th>AOV</th><th class="vd">⚠️ Vấn đề / Ghi chú</th>
+</tr></thead><tbody></tbody></table>
+
+<footer>Nguồn: Meta Ads API (chi T6, 01–29/06) + Power BI (DT/khách) · NQ theo list FranchiseDate (dashboard SLA) · Mess vỡ = sự kiện chuyển đổi không fire, KHÔNG phải ads kém</footer>
+<script>
+// ĐANG CHI: [n,vung,dt,khMoi,spend,mua,cpm,ctr,freq,clicks,vd]
+const AD=[
+["O12L2 22T12 BD (65 22T12)","Thuận An BD",145617353,106,23289659,44,61948,2.12,2.5,7970,"Chi quá lớn (23tr — nhiều nhất) · CPA Meta 529k · Mess chốt yếu (CR 0,55%) · chi/KH mới ĐẮT NHẤT 220k → giảm tiền + soi tệp/CPM"],
+["484 NTH (Quy Nhơn)","Quy Nhơn",200107100,223,13220923,16,51969,3.64,2.46,9272,"Mess VỠ (16 đơn / 9.272 click, CR 0,17%) · CTR tốt 3,64% → ads kéo người ổn, hỏng ở khâu chốt/tracking Mess"],
+["27 NT (Long Khánh)","Long Khánh ĐN",132179000,290,11736342,6,44278,2.19,3.77,5804,"Mess VỠ (CR 0,10%) + Tần suất 3,77 quá cao (dội cùng 1 nhóm người) → mở rộng tệp + sửa Mess. KH mới thật 290 cao"],
+["35 HB NT","Nha Trang",184240250,194,11659052,8,59129,3.51,2.15,6924,"Mess VỠ (8 đơn / 6.924 click, CR 0,12%) → sửa tracking; ads hút click tốt (CTR 3,5%)"],
+["130 XVNT DN","Đà Nẵng",285087333,196,18012524,19,68346,3.07,2.1,8096,"Chi lớn (18tr, 2 camp) · CPM cao 68k · Mess yếu (CR 0,23%) · chi/KH mới đắt 92k → gộp camp + sửa Mess"],
+["113 LTK (Mỹ Tho)","Mỹ Tho",185609336,148,6101775,5,52257,3.26,2.84,3810,"Mess VỠ (CR 0,13%) + Tần suất 2,84 hơi cao"],
+["99 TĐT (Cao Lãnh)","Cao Lãnh ĐT",85212857,214,5858427,12,40615,3.30,3.43,4753,"Tần suất 3,43 cao (bão hoà) + Mess chốt yếu; NHƯNG chi/KH mới rẻ 27k → ads vẫn ra khách thật"],
+["77 PVC","Q1 (Vùng An)",365131979,269,5850734,2,89727,3.75,1.91,2447,"Mess VỠ (2 đơn) · CPM cao 89k; NHƯNG KH mới thật 269 + chi/KH 21,7k → ads TỐT, chỉ hỏng tracking"],
+["344 CMT8 (Bà Rịa)","Bà Rịa VT",319892615,231,5840390,1,46844,3.52,2.76,4393,"Mess VỠ NẶNG NHẤT (1 đơn / 4.393 click, CR 0,02%); KH mới thật 231 cao → ĐỪNG TẮT, SỬA tracking Mess"],
+["170 NTL","Bình Thạnh (Vùng An)",277108282,107,5835232,142,118443,4.26,2.25,2100,"✅ Mess chạy tốt (CR 6,76%, CPA 41k); CHỈ CPM rất cao 118k (tệp Bình Thạnh nhỏ) → cân nhắc mở bán kính"],
+["359 LQD","Bình Thạnh (Vùng An)",428412982,144,5831408,72,105309,2.56,1.88,1418,"Mess ok (CPA 81k); CPM cao 105k + CTR hơi thấp 2,56% → đổi creative kéo CTR"],
+["27A NVL","Bình Thạnh (Vùng An)",491513805,261,5827338,123,78903,3.00,2.06,2217,"✅ TỐT NHẤT — Mess chạy, CPA 47k, chi/KH mới 22k"],
+["68 NT","Q10-11 (Vùng An)",311657994,112,5813515,82,94282,3.35,2.04,2068,"Khá — Mess ok (CPA 71k); CPM cao 94k"],
+["406 TNM VT","Vũng Tàu",362481264,264,5798796,3,60592,4.51,2.11,4318,"Mess VỠ (3 đơn) dù CTR CAO NHẤT 4,51%; KH mới thật 264 → ads xuất sắc, chỉ hỏng tracking"],
+["112 PQ","Phú Nhuận (Vùng An)",603134365,144,8473241,67,173334,3.21,1.81,1069,"CPM CỰC CAO 173k (gần sân bay, tệp nhỏ/đắt) đẩy CPA lên; Mess chạy tốt (CR 6,27%) → vấn đề là CPM, không phải creative"],
+["A6 NAT","Q12 (Vùng An)",371647494,213,5768787,15,79442,3.38,1.71,2451,"Mess chốt yếu (CR 0,61%, 15 đơn); chi/KH mới 27k vẫn ổn → soi luồng Mess"],
+["135 LD (Long Thành)","Long Thành ĐN",109029000,100,1762954,5,40292,1.75,2.30,765,"Chi nhỏ; CTR thấp 1,75% + Mess yếu; nhưng chi/KH mới rẻ 17,6k"],
+["177 DVB","Thủ Đức",236660468,64,1320347,19,86501,3.34,1.98,510,"Camp MỚI (từ 23/6), Mess ok (CPA 69k) — chi còn ít, theo dõi thêm"],
+["63B TDT","Đông HN",212332985,72,845542,7,5537,0.35,1.26,528,"Camp REACH (mục tiêu phủ, không phải chốt đơn) → CPM 5,5k rẻ, CTR 0,35% là BÌNH THƯỜNG với Reach"],
+["356 DXH","Thủ Đức",218871638,112,343773,3,72526,2.19,1.35,104,"Camp MỚI (23/6), chi rất ít (0,34tr) — chưa đủ data để đánh giá"]
+];
+// KHÔNG CHI: [n,vung,dt,kh,khMoi,aov]
+const NO=[
+["VINSMART PZ4","Đông HN",444491734,1990,246,223363],
+["205 30T4 CT","Cần Thơ",459162928,1921,252,239023],
+["345 NVL DN","Đà Nẵng",386569643,1601,399,241455],
+["Royal City","Đông HN",297643272,928,114,320736],
+["205 LT HP","Tỉnh phía Bắc",233120310,1008,134,231270],
+["01 TQT BL LD","Lâm Đồng",152977143,735,215,208132],
+["99 LVV","Thủ Đức",183646063,831,77,220994],
+["90 TDH","Đông HN",176741684,759,49,232861],
+["82 VTP","Đông HN",171926841,778,40,220986],
+["14 LN","Nam HN",152950013,785,103,194841],
+["104 CB","Nam HN",151535493,791,83,191575],
+["TG 25/4 QN","Tỉnh phía Bắc",149830546,619,118,242053],
+["671 QL50","Q10-11-5-6",147083803,749,77,196374],
+["185 30T4 BD","Thủ Dầu BD",145446169,672,125,216438],
+["55 TH","Nam HN",137330627,595,70,230808],
+["14AD4 BD","Thuận An BD",135581837,615,90,220458],
+["872 QL22","Q12-Củ Chi-LX",134694563,578,78,233036],
+["504 30T4","Vũng Tàu",126130000,693,137,182006],
+["152 NO","Gò Vấp-Q12",117401785,493,55,238137],
+["357 LACASTA","Hà Đông",117464462,613,67,191622],
+["411 NVT","Thủ Đức",115681049,565,65,220108],
+["13 BH2","Thủ Dầu BD",102903550,476,104,216184],
+["F33 HV PT","Phan Thiết",101324000,523,204,193736],
+["161 NVC","Cần Thơ",86560067,441,61,196281],
+["26 TT","Đông HN",79366714,514,111,154410],
+["BP TT","Đông HN",82088081,487,127,168559],
+["93 NTMK","Tỉnh miền Trung",53656953,247,56,217235]
+];
+const vnd=n=>"₫"+Math.round(n).toLocaleString("vi-VN");const big=n=>Math.round(n).toLocaleString("vi-VN");const M=n=>(n/1e6).toLocaleString("vi-VN",{maximumFractionDigits:1})+"tr";const pc=n=>n.toLocaleString("vi-VN",{maximumFractionDigits:2})+"%";
+const ad=AD.map(r=>{const[n,v,dt,m,a,mu,cpm,ctr,fr,clk,vd]=r;const cr=clk?mu/clk*100:0;const cpa=mu?a/mu:0;const ck=m?a/m:0;
+  let st="p-warn";const broken=cr<0.3&&mu<=20;
+  if(/REACH|MỚI/i.test(vd)) st="p-mut";
+  else if(broken) st="p-bad";
+  else if(ck<=35000&&cr>=1) st="p-good";
+  else if(ck>120000||cpm>150000) st="p-bad";
+  return{n,v,dt,m,a,mu,cpm,ctr,fr,clk,vd,cr,cpa,ck,st,broken};});
+// KPI
+const tA=ad.reduce((x,s)=>x+s.a,0),tKMad=ad.reduce((x,s)=>x+s.m,0),tDTall=ad.reduce((x,s)=>x+s.dt,0)+NO.reduce((x,s)=>x+s[2],0);
+document.getElementById("kpis").innerHTML=[
+ {l:"Salon NQ (có DT)",v:big(ad.length+NO.length)},{l:"Đang chi ads",v:big(ad.length)},{l:"KHÔNG chi ads",v:big(NO.length)},
+ {l:"Tổng chi Meta T6",v:vnd(tA)},{l:"KH mới (salon có ads)",v:big(tKMad)},{l:"Chi Meta / KH mới (gộp)",v:vnd(tA/tKMad)}
+].map(k=>`<div class="kpi"><div class="l">${k.l}</div><div class="v">${k.v}</div></div>`).join("");
+const brk=ad.filter(s=>s.broken);
+document.getElementById("alert").innerHTML=`🚨 <b>Vấn đề LỚN NHẤT — VỠ tracking Mess ở ${brk.length} salon</b> (CR < 0,3% — click vào Mess nhiều nhưng ~0 đơn được ghi nhận): <b>${brk.map(s=>s.n.split(" (")[0]).join(", ")}</b>. Tổng chi nhóm này <b>${vnd(brk.reduce((x,s)=>x+s.a,0))}</b> — nhìn CPA Meta như 1–6 triệu nhưng KH mới THẬT vẫn về (vd Bà Rịa 231, 406 TNM 264, 77 PVC 269). → Đây là lỗi <b>cài đặt sự kiện chuyển đổi Mess</b>, KHÔNG phải ads kém. Phải sửa tracking mới đo đúng.`;
+const noHi=[...NO].sort((a,b)=>b[2]-a[2]).slice(0,4);
+document.getElementById("ov").innerHTML=`📌 <b>Đắt thật cần xử:</b> 65 22T12 (chi/KH 220k), 130 XVNT (92k). <b>CPM cao do tệp nhỏ:</b> 112 PQ (173k), 170 NTL (118k), 359 LQD (105k). <b>Tần suất bão hoà:</b> Long Khánh 3,77 · 99 TĐT 3,43. <b>💤 DT cao mà KHÔNG chạy ads:</b> ${noHi.map(s=>s[0]+" ("+M(s[2])+", "+s[4]+" KH mới)").join(" · ")} → cân nhắc bật ads để scale.`;
+document.getElementById("cAd").textContent=ad.length+" salon · "+vnd(tA);
+document.getElementById("cNo").textContent=NO.length+" salon";
+// table AD
+document.querySelector("#tAd tbody").innerHTML=ad.map(s=>`<tr>
+<td><b>${s.n}</b></td><td class="mut">${s.v}</td>
+<td class="num">${M(s.dt)}</td><td class="num b">${big(s.m)}</td>
+<td class="num">${M(s.a)}</td><td class="num">${big(s.mu)}</td>
+<td class="num ${s.cr<0.3?'red':(s.cr>=2?'grn':'')}">${pc(s.cr)}</td>
+<td class="num ${s.cpm>110000?'red':''}">${vnd(s.cpm)}</td>
+<td class="num">${pc(s.ctr)}</td>
+<td class="num ${s.fr>2.6?'org':''}">${s.fr.toFixed(2)}</td>
+<td class="num ${s.cpa>200000?'red':''}">${s.mu?vnd(s.cpa):'—'}</td>
+<td class="num ${s.ck>120000?'red':(s.ck<=35000?'grn':'')}">${vnd(s.ck)}</td>
+<td style="text-align:center"><span class="pill ${s.st}">${s.st==='p-good'?'🟢':s.st==='p-bad'?'🔴':s.st==='p-mut'?'➖':'🟡'}</span></td>
+<td class="vd">${s.vd}</td></tr>`).join("");
+// table NO
+document.querySelector("#tNo tbody").innerHTML=[...NO].sort((a,b)=>b[2]-a[2]).map(r=>{const[n,v,dt,kh,m,aov]=r;
+ const vd=dt>=300e6?`<span class="org">Không chạy ads dù DT rất cao (${M(dt)}, ${m} KH mới) → bỏ lỡ cơ hội scale, nên đánh giá bật ads</span>`:
+   dt>=180e6?`Không chạy ads (DT khá ${M(dt)}) — đang sống organic, cân nhắc test ads`:`Không chạy ads — sống bằng organic`;
+ return `<tr><td><b>${n}</b></td><td class="mut">${v}</td><td class="num">${M(dt)}</td><td class="num mut">${big(kh)}</td><td class="num b">${big(m)}</td><td class="num mut">${vnd(aov)}</td><td class="vd">${vd}</td></tr>`;}).join("");
+</script></body></html>
